@@ -1,6 +1,6 @@
 package com.cyberbludging.cap.entity;
 
-public class province {
+public class Province {
     private String pname;
     private Integer unum;
 

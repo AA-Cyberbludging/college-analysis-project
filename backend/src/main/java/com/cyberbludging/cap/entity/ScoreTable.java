@@ -1,6 +1,6 @@
 package com.cyberbludging.cap.entity;
 
-public class score_table {
+public class ScoreTable {
     private String pname;
     private String subject;
     private Integer year;

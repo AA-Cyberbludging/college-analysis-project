@@ -1,12 +1,12 @@
 package com.cyberbludging.cap.entity;
 
-public class enrollment_plan {
+public class EnrollmentPlan {
     private Integer uid;
     private String pname;
     private String subject;
     private String major;
     private Integer year;
-    private Integer enrollment_num;
+    private Integer enrollmentNum;
 
     public Integer getUid() {
         return uid;
@@ -48,12 +48,12 @@ public class enrollment_plan {
         this.year = year;
     }
 
-    public Integer getEnrollment_num() {
-        return enrollment_num;
+    public Integer getEnrollmentNum() {
+        return enrollmentNum;
     }
 
-    public void setEnrollment_num(Integer enrollment_num) {
-        this.enrollment_num = enrollment_num;
+    public void setEnrollmentNum(Integer enrollmentNum) {
+        this.enrollmentNum = enrollmentNum;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class enrollment_plan {
                 ", subject='" + subject + '\'' +
                 ", major='" + major + '\'' +
                 ", year=" + year +
-                ", enrollment_num=" + enrollment_num +
+                ", enrollmentNum=" + enrollmentNum +
                 '}';
     }
 }

@@ -2,7 +2,10 @@ package com.cyberbludging.cap.mapper;
 
 import com.cyberbludging.cap.entity.MinimumPassingScore;
 import com.cyberbludging.cap.entity.University;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

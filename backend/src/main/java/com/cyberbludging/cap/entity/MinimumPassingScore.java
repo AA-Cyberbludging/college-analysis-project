@@ -1,6 +1,6 @@
 package com.cyberbludging.cap.entity;
 
-public class mps {
+public class MinimumPassingScore {
     private Integer uid;
     private Integer year;
     private String major;

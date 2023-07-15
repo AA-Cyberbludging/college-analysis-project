@@ -2,11 +2,9 @@ package com.cyberbludging.cap.entity;
 
 public class University {
     private Integer uid;
-
     private String uname;
     private String pname;
     private String utype;
-
     private Integer upopularity;
 
     public Integer getUid() {

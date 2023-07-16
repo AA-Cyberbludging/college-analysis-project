@@ -15,10 +15,10 @@ import java.util.List;
 public interface UniversityMapper {
        //获取学校列表
        @Select("SELECT uid, uname, pname, utype, upopularity FROM university")
-       List<UniversityDTO> getAllUniversity();
+        List<UniversityDTO> getAllUniversity();
         //获取各省份大学数量
-        @Select("select * from province ")
-        Province getUniversityCountBypName();
+        @Select("select * from province order by unum")
+        List<Province> getUniversityCountBypName();
         //获取某大学招生计划
         @Select("SELECT * FROM enrollment_plan " +
                 "natural join mps " +
@@ -30,10 +30,14 @@ public interface UniversityMapper {
                 "natural join university " +
                 " WHERE uname = #{name}")
         List<MinimumPassingScore> getMPSByuName(String name);
-        //获取某大学的所有信息（男女比率，就业率，升学率，国内就业率等）
-        @Select("SELECT * FROM university" +
+        //获取某大学的所有信息
+        @Select("SELECT * FROM university " +
                 " WHERE uname = #{name}")
         University getUniversityByName(String name);
+        //获取某大学的男女比率，就业率，升学率，国内就业率
+        @Select("SELECT sexRatio,employRate,shipmentRate,enrollmentRate FROM university " +
+                " WHERE uname = #{name}")
+        University getUniversityRateByName(String name);
 //************************后面的先预备着****************************//
         @Select("SELECT * FROM university" +
                 " WHERE pname = #{name}")

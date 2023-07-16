@@ -27,9 +27,11 @@ public class AnalyseInfoService {
         return minimumPassingScores;
     }
 
+    /*返回某大学的招生计划
+    *返回EnrollmentPlan列表
+     */
     public List<EnrollmentPlan> getEnrollmentPlan(String uname){
         enrollmentPlans = universityMapper.getEnrollmentPlanByuName(uname);
-
         return enrollmentPlans;
     }
 

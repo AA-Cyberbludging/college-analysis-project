@@ -29,7 +29,6 @@ public class DisplayController {
     private AuthenticationService authenticationService;
     private UniCompareService uniCompareService;
     private UniRecommendationService uniRecommendationService;
-    private UserService userService;
 
 
 
@@ -40,26 +39,34 @@ public class DisplayController {
     }
 
 
+    @GetMapping("/university")
+    @ApiOperation("获取大学列表")
+    public List<UniversityDTO> getAllUniversity() {
+        return displayInfoService.getAllUniversity();
+    }
 
-    @GetMapping("/{UniversityInfo}")
-    @ApiOperation("获取所有大学信息")
-    public University searchByuName(@PathVariable String uname){
-        return displayInfoService.searchByuName(uname);
+    @GetMapping("/university/{id}")
+    @ApiOperation("根据 ID 获取大学详细信息 (升学率，男女比例等)")
+    public University getUniversityDetail(@PathVariable Integer id) {
+        return displayInfoService.searchById(id);
     }
 
 
+    /*
     @GetMapping("/{SearchByProvince}")
     @ApiOperation("按地区和类别查找大学")
     public List<UniversityDTO> getUniversityBypNameAndType(@PathVariable String pname, String type){
         return displayInfoService.rankByPopularity();
     }
+    */
 
-
+    /*
     @GetMapping("/{rankByPopularity}")
     @ApiOperation("获取大学热度排名")
     public List<UniversityDTO> rankByPopularity(){
         return displayInfoService.rankByPopularity();
     }
+    */
 
     @GetMapping("/{rankByProvince}")
     @ApiOperation("获取大学省份数量排名")
@@ -67,13 +74,13 @@ public class DisplayController {
         return displayInfoService.rankByProvince();
     }
 
-
+/*
     @GetMapping("/{UniCompare}")
     @ApiOperation("展示两所学校的对比")
     public List<University> UniCompareService(@PathVariable String uname1, String uname2){
         return uniCompareService.getRate(uname1,uname2);
     }
-
+*/
 
 
 /*

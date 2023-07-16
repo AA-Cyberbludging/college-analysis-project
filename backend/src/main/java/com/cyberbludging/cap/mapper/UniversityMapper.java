@@ -20,9 +20,11 @@ public interface UniversityMapper {
        @Select("SELECT uid, uname, pname, utype, upopularity FROM university ")
         List<UniversityDTO> getAllUniversity();
        //通过地区和类型选择学校
+        /*
         @Select("SELECT uid, uname, pname, utype, upopularity FROM university "+
                 "WHERE pname = #{name} and utype = #{type}")
         List<UniversityDTO> getUniversityByNameAndType(String name,String type);
+        */
         //获取各省份大学数量
         @Select("select * from province order by unum")
         List<Province> getUniversityCountBypName();
@@ -37,21 +39,29 @@ public interface UniversityMapper {
                 "natural join university " +
                 " WHERE uname = #{name}")
         List<MinimumPassingScore> getMPSByuName(String name);
+        /*
         //获取某大学的所有信息
         @Select("SELECT * FROM university " +
                 " WHERE uname = #{name}")
         University getUniversityByName(String name);
+        */
         //获取某大学的男女比率，就业率，升学率，国内就业率
-        @Select("SELECT sexRatio,employRate,shipmentRate,enrollmentRate FROM university " +
+        @Select("SELECT sex_ratio, employ_rate, shipment_rate, enrollment_rate FROM university " +
                 " WHERE uname = #{name}")
         University getUniversityRateByName(String name);
         //按热度排序所有大学
-        @Select("select uid, uname, pname, utype, upopularity from university ORDER BY upopularity")
+        /*
+        @Select("select uid, uname, pname, utype, upopularity from university " +
+                " where upopularity is not null" +
+                " order by upopularity")
         List<UniversityDTO> getUniversityOrderByPopularity();
+        */
 //************************后面的先预备着****************************//
+        /*
         @Select("SELECT * FROM university" +
                 " WHERE pname = #{name}")
         University getUniversityBypName(String name);
+        */
 
         @Select("SELECT * FROM university" +
                 " WHERE uid = #{id}")
@@ -61,7 +71,7 @@ public interface UniversityMapper {
                 " WHERE uid = #{id}")
         MinimumPassingScore getMPSByID(Integer id);
 
-        @Select("SELECT * FROM university" +
+        @Select("SELECT * FROM university " +
                 "natural join MPS" +
                 " WHERE year = 2022 and subject = #{subject} and umps < #{score} and pname = #{name}")
         University getUniversityByStudentInfo(Integer score,String subject,String name);

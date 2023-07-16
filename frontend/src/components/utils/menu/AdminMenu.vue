@@ -40,7 +40,7 @@ export default defineComponent({
 
 <template>
   <el-menu mode="horizontal" default-active="1" id="menu">
-    <el-menu-item index="1" @click="handleMenu(1)"></el-menu-item>
+    <el-menu-item index="1" @click="handleMenu(1)">首页</el-menu-item>
     <el-menu-item index="2" @click="handleMenu(2)">大学信息管理</el-menu-item>
     <el-menu-item index="3" @click="handleMenu(3)">用户信息管理</el-menu-item>
   </el-menu>

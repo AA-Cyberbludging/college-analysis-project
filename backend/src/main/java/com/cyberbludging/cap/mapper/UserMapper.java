@@ -1,11 +1,10 @@
 package com.cyberbludging.cap.mapper;
 
 import com.cyberbludging.cap.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
@@ -27,6 +26,10 @@ public interface UserMapper {
             " WHERE user_id = #{id}")
     User getUserInfo(Integer id);
 
+    @Select("SELECT user_id, user_name, user_score, pname, subject FROM `user` " +
+            " WHERE user_type = 1")
+    List<User> getAllUsers();
+
     @Update("UPDATE `user` " +
             "   SET user_name = #{name}, " +
             "       user_score = #{score}, " +
@@ -34,6 +37,9 @@ public interface UserMapper {
             "       subject = #{subject} " +
             " WHERE user_id = #{id}")
     void updateUserInfo(Integer id, String name, Integer score, String pname, String subject);
+
+    @Delete("DELETE FROM `user` WHERE user_id = #{id}")
+    void deleteUser(Integer id);
 
     @Select("SELECT COUNT(*) FROM `user` " +
             " WHERE user_id = #{id} " +

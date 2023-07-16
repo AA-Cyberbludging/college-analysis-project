@@ -36,6 +36,5 @@ public class UserService {
                 return Result.error().setMessage("密码更新失败");
             }
         }
-
     }
 }

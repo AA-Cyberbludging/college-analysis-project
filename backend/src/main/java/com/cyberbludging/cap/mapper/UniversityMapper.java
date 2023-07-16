@@ -5,26 +5,40 @@ import com.cyberbludging.cap.entity.MinimumPassingScore;
 import com.cyberbludging.cap.entity.Province;
 import com.cyberbludging.cap.entity.University;
 import com.cyberbludging.cap.entity.dto.UniversityDTO;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Mapper
+@Repository
 public interface UniversityMapper {
        //获取学校列表
        @Select("SELECT uid, uname, pname, utype, upopularity FROM university")
        List<UniversityDTO> getAllUniversity();
+       //获取大学数量
+       @Select("SELECT COUNT(*) FROM university")
+       Integer getUniversityCount();
         //获取各省份大学数量
         @Select("select * from province ")
-        Province getUniversityCountBypName();
+        List<Province> getUniversityCountBypName();
+        //获取省份数量
+        @Select("SELECT COUNT(*) FROM province")
+        Integer getProvinceCount();
         //获取某大学招生计划
         @Select("SELECT * FROM enrollment_plan " +
                 "natural join mps " +
                 "natural join university " +
                 " WHERE uname = #{name}")
         List<EnrollmentPlan> getEnrollmentPlanByuName(String name);
+        //获取所有大学各专业录取分数线
+        @Select("SELECT * FROM mps " +
+                "natural join university " )
+        List<MinimumPassingScore> getMPS();
         //获取某大学各专业录取分数线及位次
         @Select("SELECT * FROM mps " +
                 "natural join university " +

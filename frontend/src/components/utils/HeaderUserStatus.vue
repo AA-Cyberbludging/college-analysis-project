@@ -4,6 +4,7 @@ import { defineComponent } from 'vue';
 import { userStore } from '@/store/user';
 import { miscStore } from '@/store/misc';
 import { mapStores } from 'pinia';
+import { provinces } from '@/const';
 
 export default defineComponent({
   data() {
@@ -20,7 +21,11 @@ export default defineComponent({
         name: "",
         password: "",
         confirmedPassword: "",
+        pname: "",
+        subject: "理科",
+        userScore: 0 as number,
       },
+      provinces: provinces
     }
   },
   methods: {
@@ -40,8 +45,11 @@ export default defineComponent({
           this.userStore.userId = loginResult.data.data.id
           this.userStore.userName = this.loginForm.name
           this.userStore.isStudent = this.loginForm.isStudent
-          this.loginDialogVisible = false;
-          this.miscStore.login = true;
+          this.loginDialogVisible = false
+          this.miscStore.login = true
+          this.loginForm.name = ""
+          this.loginForm.password = ""
+          this.loginForm.isStudent = true
         } else {
           this.$message.error(loginResult.data.message)
         }
@@ -70,11 +78,25 @@ export default defineComponent({
         this.$message.error("两次输入的密码不一致")
         return
       }
+      if (this.registerForm.pname === "") {
+        this.$message.error("请选择省份")
+        return
+      }
+      if (this.registerForm.userScore < 400 || this.registerForm.userScore > 750) {
+        this.$message.error("请输入正确范围内的分数 (400~750)")
+        return
+      }
       try {
         const registerResult = await axios.post('/api/auth/register', this.registerForm)
         if (registerResult.data.success === true) {
           this.$message.success("注册成功，请重新登录")
-          this.registerDialogVisible = false;
+          this.registerDialogVisible = false
+          this.registerForm.name = ""
+          this.registerForm.password = ""
+          this.registerForm.confirmedPassword = ""
+          this.registerForm.pname = ""
+          this.registerForm.subject = "理科"
+          this.registerForm.userScore = 0
         } else {
           this.$message.error(registerResult.data.message)
         }
@@ -86,6 +108,7 @@ export default defineComponent({
       this.miscStore.login = false
       this.$message.success("您已成功退出")
       this.$router.replace('/')
+      window.localStorage.clear() // ...
     }
   },
   computed: {
@@ -141,6 +164,20 @@ export default defineComponent({
         </el-form-item>
         <el-form-item label="确认密码">
           <el-input v-model="registerForm.confirmedPassword" type="password" />
+        </el-form-item>
+        <el-form-item label="省份">
+          <el-select v-model="registerForm.pname" placeholder="无">
+            <el-option v-for="(item, _) in provinces" :label="item" :value="item" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="文理">
+          <el-select v-model="registerForm.subject" placeholder="理科">
+            <el-option label="文科" value="文科" />
+            <el-option label="理科" value="理科" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="分数">
+          <el-input v-model="registerForm.userScore" />
         </el-form-item>
         <el-button type="primary" @click="register" style="margin: 20px;">注册</el-button>
       </el-form>

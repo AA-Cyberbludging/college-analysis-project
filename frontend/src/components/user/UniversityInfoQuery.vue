@@ -5,9 +5,9 @@ import { defineComponent } from 'vue';
 
 type UniversityList = {
   uid: number,
-  uname: String,
-  utype: String,
-  pname: String
+  uname: string,
+  utype: string,
+  pname: string,
   upopularity: number
 }
 

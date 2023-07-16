@@ -1,5 +1,6 @@
 package com.cyberbludging.cap.controller;
 
+import com.cyberbludging.cap.entity.User;
 import com.cyberbludging.cap.service.*;
 import com.cyberbludging.cap.util.Result;
 import com.cyberbludging.cap.util.dto.UserDTO;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
+import java.util.List;
 
 
 @Api(tags = "管理员接口")
@@ -18,31 +19,39 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/admin")
 @CrossOrigin
 public class AdministratorController {
-/*
+    @Autowired
+    private AdministratorService administratorService;
+
     @GetMapping("/users")
     @ApiOperation("获取用户列表")
-    public Result getUsers() {
-
+    public List<User> getUsers() {
+        return administratorService.getAllUsers();
     }
 
+    /*
     @GetMapping("/users/{userId}")
     @ApiOperation("获取用户信息")
     public UserDTO getUser(@PathVariable Integer userId) {
 
     }
+    */
 
+    /*
     @PutMapping("/users/{userId}")
     @ApiOperation("修改用户信息")
     public Result updateUser(@PathVariable Integer userId, @RequestBody UserDTO user) {
 
     }
+    */
+
 
     @DeleteMapping("/users/{userId}")
     @ApiOperation("删除用户")
     public Result deleteUser(@PathVariable Integer userId) {
-
+        return administratorService.deleteUser(userId);
     }
 
+    /*
     @GetMapping("/feedback")
     @ApiOperation("获取用户反馈列表")
     public Result getFeedbackList() {
@@ -72,6 +81,5 @@ public class AdministratorController {
     public Result manageDatabase() {
 
     }
-*/
-
+    */
 }

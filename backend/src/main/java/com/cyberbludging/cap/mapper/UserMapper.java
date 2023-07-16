@@ -1,11 +1,10 @@
 package com.cyberbludging.cap.mapper;
 
 import com.cyberbludging.cap.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
@@ -16,8 +15,9 @@ public interface UserMapper {
             "   AND user_type = #{type}")
     Integer verifyUser(String name, String password, Integer type);
 
-    @Insert("INSERT INTO `user`(user_name, user_pswd, user_type) VALUES (#{name}, #{password}, 1)")
-    void registerUser(String name, String password);
+    @Insert("INSERT INTO `user`(user_name, user_pswd, user_type, pname, subject, user_score) " +
+            "     VALUES (#{name}, #{password}, 1, #{pname}, #{subject}, #{userScore})")
+    void registerUser(String name, String password, String pname, String subject, Integer userScore);
 
     @Select("SELECT user_id FROM `user` WHERE user_name = #{name}")
     Integer getUserId(String name);
@@ -26,6 +26,10 @@ public interface UserMapper {
             " WHERE user_id = #{id}")
     User getUserInfo(Integer id);
 
+    @Select("SELECT user_id, user_name, user_score, pname, subject FROM `user` " +
+            " WHERE user_type = 1")
+    List<User> getAllUsers();
+
     @Update("UPDATE `user` " +
             "   SET user_name = #{name}, " +
             "       user_score = #{score}, " +
@@ -33,6 +37,9 @@ public interface UserMapper {
             "       subject = #{subject} " +
             " WHERE user_id = #{id}")
     void updateUserInfo(Integer id, String name, Integer score, String pname, String subject);
+
+    @Delete("DELETE FROM `user` WHERE user_id = #{id}")
+    void deleteUser(Integer id);
 
     @Select("SELECT COUNT(*) FROM `user` " +
             " WHERE user_id = #{id} " +

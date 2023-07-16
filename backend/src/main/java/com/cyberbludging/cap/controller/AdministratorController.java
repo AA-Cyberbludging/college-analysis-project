@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/admin")
 @CrossOrigin
 public class AdministratorController {
-
 /*
     @GetMapping("/users")
     @ApiOperation("获取用户列表")

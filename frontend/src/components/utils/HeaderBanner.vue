@@ -21,7 +21,7 @@ export default defineComponent({
       <AdminMenu v-else />
     </el-col>
       <el-col :span="6">
-        <HeaderUserStatus />
+        <HeaderUserStatus/>
       </el-col>
     </el-row>
   </header>

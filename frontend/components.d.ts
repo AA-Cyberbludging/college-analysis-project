@@ -11,8 +11,10 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AdminMenu: typeof import('./src/components/utils/menu/AdminMenu.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElDivider: typeof import('element-plus/es')['ElDivider']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
@@ -27,9 +29,12 @@ declare module '@vue/runtime-core' {
     HeaderBanner: typeof import('./src/components/utils/HeaderBanner.vue')['default']
     HeaderUserStatus: typeof import('./src/components/utils/HeaderUserStatus.vue')['default']
     Index: typeof import('./src/components/Index.vue')['default']
+    Recommendation: typeof import('./src/components/user/Recommendation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StudentMenu: typeof import('./src/components/utils/menu/StudentMenu.vue')['default']
+    UniversityInfoQuery: typeof import('./src/components/user/UniversityInfoQuery.vue')['default']
+    UniversityListCard: typeof import('./src/components/utils/UniversityListCard.vue')['default']
     UserInfo: typeof import('./src/components/UserInfo.vue')['default']
   }
 }

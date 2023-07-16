@@ -16,38 +16,44 @@ public class DisplayInfoService {
     @Autowired
     private UniversityMapper universityMapper;
 
-    List<UniversityDTO> universityDOT = new ArrayList<UniversityDTO>();
-    List<Province> province = new ArrayList<Province>();
+    List<UniversityDTO> universityDOT = new ArrayList<>();
+    List<Province> province = new ArrayList<>();
 
-
-  /*按大学名查找大学所有信息
+    public List<UniversityDTO> getAllUniversity() {
+        return universityMapper.getAllUniversity();
+    }
+  /*按大学 ID 查找大学所有信息
   *返回University
    */
-    public University searchByuName(String uname){
+    public University searchById(Integer id){
 
-        return universityMapper.getUniversityByName(uname);
+        return universityMapper.getUniversityByID(id);
     }
 
     /*按地区和类型查找大学
     *
      */
+    /*
     public List<UniversityDTO> getUniversityBypNameAndType(String pname, String type){
 
         universityDOT = universityMapper.getUniversityByNameAndType(pname,type);
 
         return  universityDOT;
     }
+    */
 
 
     /*展示大学热度排名
     返回排序后的UniversityDTO列表
     */
+    /*
     public List<UniversityDTO> rankByPopularity(){
 
         universityDOT = universityMapper.getUniversityOrderByPopularity();
         return  universityDOT;
 
     }
+    */
 
     /*展示各省份大学数量排名
     返回排序后的Province列表

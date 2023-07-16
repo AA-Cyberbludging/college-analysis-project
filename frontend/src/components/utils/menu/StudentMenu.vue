@@ -11,13 +11,13 @@ export default defineComponent({
           this.$router.push('/')
           break
         case 2:
-          this.$router.push('/')
+          this.$router.push('/uinfo')
           break
         case 3:
         if (!this.miscStore.login) {
             this.$message.info("请先登录")
           } else {
-            this.$router.push('/')
+            this.$router.push('/recom')
           }
           break
         case 4:

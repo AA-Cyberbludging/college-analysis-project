@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {
-    private static final Logger log2 = Logger.getLogger("LoginInterceptor");
+    private static final Logger log2 = Logger.getLogger("AuthenticationInterceptor");
     // 拦截登录以外的其他请求，进行 Token 验证
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

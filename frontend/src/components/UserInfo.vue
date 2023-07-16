@@ -4,11 +4,14 @@ import axios from 'axios';
 import { mapStores } from 'pinia';
 import { defineComponent } from 'vue';
 import { provinces } from '@/const'
+import { ElMessage } from 'element-plus';
+import { miscStore } from '@/store/misc';
 export default defineComponent({
   data() {
     return {
       isChangable: false,
       provinces: provinces,
+      changePasswordDialogVisible: false,
       newUserInfoForm: {
         userName: {} as string,
         userScore: {} as number,
@@ -42,19 +45,65 @@ export default defineComponent({
     changeInfo() {
       this.isChangable = true;
     },
-    updateUserInfo() {
-      this.$message.info("还没写😔")
+    async updateUserInfo() {
+      try {
+        const res = await axios.post(`/api/user/${this.userStore.userId}`, this.newUserInfoForm, {
+          headers: {
+            Authorization: window.localStorage.getItem('cap-access')}
+          })
+        if (res.data.success) {
+          this.getUserInfo()
+          this.$message.success("信息更新成功")
+        } else {
+          this.restoreUserForm()
+          this.$message.error("信息更新失败")
+        }
+      } catch (error: any) {
+        this.$message.error("信息更新失败")
+      }
       this.isChangable = false;
     },
     restoreUserForm() {
       this.initForm()
+      this.isChangable = false;
     },
     changePassword() {
-      
+      if (this.newPasswordForm.oldPassword.trim() === ""
+        || this.newPasswordForm.newPassword.trim() === "") {
+        this.$message.error("请输入密码")
+        return
+      }
+
+      if (this.newPasswordForm.newPassword.trim().length < 6) {
+        this.$message.error("密码长度应大于 6 位")
+        this.newPasswordForm.newPassword = ""
+        return
+      }
+
+      let path = `/api/user/${this.userStore.userId}/password`
+      try {
+        axios.post(path, this.newPasswordForm, {
+          headers: {
+            Authorization: window.localStorage.getItem('cap-access')
+          }
+        }).then(res => {
+          ElMessage({ message: res.data.message, type: res.data.success ? "success" : "error" })
+          if (res.data.success) {
+            this.logout()
+          }
+        })
+      } catch (error: any) {
+        this.$message.error("请求失败: " + error.toString())
+      }
+      this.newPasswordForm.oldPassword = this.newPasswordForm.newPassword = ""
+    },
+    logout() {
+      this.miscStore.login = false
+      this.$router.replace('/')
     }
   },
   computed: {
-    ...mapStores(userStore)
+    ...mapStores(userStore, miscStore)
   },
   created() {
     this.getUserInfo()
@@ -113,7 +162,7 @@ export default defineComponent({
       </el-row>
       <el-row style="margin-bottom: 40px;" v-if="!isChangable">
         <el-col :span="12">
-          <el-button>修改密码</el-button>
+          <el-button @click="changePasswordDialogVisible = true">修改密码</el-button>
         </el-col>
         <el-col :span="12">
           <el-button type="primary" @click="changeInfo">修改基本信息</el-button>
@@ -129,6 +178,24 @@ export default defineComponent({
       </el-row>
     </div>
   </div>
+
+  <el-dialog v-model="changePasswordDialogVisible" title="修改密码" style="max-width: 500px;">
+    <el-form :model="newPasswordForm">
+      <el-form-item label="旧密码">
+        <el-input v-model="newPasswordForm.oldPassword" type="password"></el-input>
+      </el-form-item>
+      <el-form-item label="新密码">
+        <el-input v-model="newPasswordForm.newPassword" type="password"></el-input>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="changePasswordDialogVisible = false,
+          newPasswordForm.newPassword = newPasswordForm.oldPassword = ''">取消</el-button>
+        <el-button type="primary" @click="changePassword">确认</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped>

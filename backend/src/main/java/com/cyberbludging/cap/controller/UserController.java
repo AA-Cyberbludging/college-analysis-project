@@ -2,6 +2,7 @@ package com.cyberbludging.cap.controller;
 
 
 import com.cyberbludging.cap.entity.User;
+import com.cyberbludging.cap.entity.dto.PasswordDTO;
 import com.cyberbludging.cap.service.UserService;
 import com.cyberbludging.cap.util.Result;
 import io.swagger.annotations.Api;
@@ -14,21 +15,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 @CrossOrigin
 public class UserController {
-/*
-    @GetMapping("/{userId}")
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/{id}")
     @ApiOperation("获取用户信息")
-    public UserDTO getUser(@PathVariable Integer userId) {
+    User getUserInfo(@PathVariable Integer id) {
+        return userService.getUserInfo(id);
+    }
 
+    @PostMapping("/{id}")
+    @ApiOperation("更新用户信息")
+    Result updateUserInfo(@PathVariable Integer id,
+                          @RequestBody User newInfo) {
+        return userService.updateUserInfo(id, newInfo.getUserName(), newInfo.getUserScore(), newInfo.getPname(), newInfo.getSubject());
     }
 
 
-    @PutMapping("/{userId}")
-    @ApiOperation("修改用户信息")
-    public Result updateUser(@PathVariable Integer userId, @RequestBody UserDTO user) {
 
+    @PostMapping("/{id}/password")
+    @ApiOperation("更新用户密码")
+    Result updateUserPassword(@PathVariable Integer id, @RequestBody PasswordDTO passwordForm) {
+        return userService.updateUserPassword(id, passwordForm.getOldPassword(), passwordForm.getNewPassword());
     }
-
-
+/*
     @PostMapping("/{userId}/consultation")
     @ApiOperation("一对一咨询")
     public Result requestConsultation(@PathVariable Integer userId, @RequestBody ... request) {
@@ -113,19 +124,5 @@ public class UserController {
     @ApiOperation("综合推荐")
 */
 
-    @Autowired
-    private UserService userService;
 
-    @GetMapping("/{id}")
-    @ApiOperation("获取用户信息")
-    User getUserInfo(@PathVariable Integer id) {
-        return userService.getUserInfo(id);
-    }
-
-    @PostMapping("/{id}")
-    @ApiOperation("更新用户信息")
-    Result updateUserInfo(@PathVariable Integer id,
-                          @RequestBody User newInfo) {
-        return userService.updateUserInfo(id, newInfo.getUserName(), newInfo.getUserScore(), newInfo.getPname(), newInfo.getSubject());
-    }
 }

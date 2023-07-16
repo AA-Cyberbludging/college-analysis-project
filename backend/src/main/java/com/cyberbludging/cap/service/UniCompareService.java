@@ -10,13 +10,13 @@ import java.util.ArrayList;
 @Service
 public class UniCompareService {
 
-    private String compare_obj;//分析对比的对象
+    //private String compare_obj;//分析对比的对象
     private UniversityMapper universityMapper;
 
-    public UniCompareService(String obj){
-        this.compare_obj = obj;
-
-    }
+//    public UniCompareService(String obj){
+//        this.compare_obj = obj;
+//
+//    }
 
     /*男女比例对比分析*/
     public void sexRatioCompare(ArrayList<University> uni){

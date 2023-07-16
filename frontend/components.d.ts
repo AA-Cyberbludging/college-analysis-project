@@ -36,5 +36,6 @@ declare module '@vue/runtime-core' {
     UniversityInfoQuery: typeof import('./src/components/user/UniversityInfoQuery.vue')['default']
     UniversityListCard: typeof import('./src/components/utils/UniversityListCard.vue')['default']
     UserInfo: typeof import('./src/components/UserInfo.vue')['default']
+    UserManage: typeof import('./src/components/admin/UserManage.vue')['default']
   }
 }

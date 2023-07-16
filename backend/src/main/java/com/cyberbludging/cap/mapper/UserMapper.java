@@ -16,8 +16,9 @@ public interface UserMapper {
             "   AND user_type = #{type}")
     Integer verifyUser(String name, String password, Integer type);
 
-    @Insert("INSERT INTO `user`(user_name, user_pswd, user_type) VALUES (#{name}, #{password}, 1)")
-    void registerUser(String name, String password);
+    @Insert("INSERT INTO `user`(user_name, user_pswd, user_type, pname, subject, user_score) " +
+            "     VALUES (#{name}, #{password}, 1, #{pname}, #{subject}, #{userScore})")
+    void registerUser(String name, String password, String pname, String subject, Integer userScore);
 
     @Select("SELECT user_id FROM `user` WHERE user_name = #{name}")
     Integer getUserId(String name);

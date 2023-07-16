@@ -13,8 +13,8 @@ export default defineComponent({
       provinces: provinces,
       changePasswordDialogVisible: false,
       newUserInfoForm: {
-        userName: {} as string,
-        userScore: {} as number,
+        userName: "" as string,
+        userScore: 0 as number,
         pname: {} as string,
         subject: {} as string,
       },
@@ -105,8 +105,8 @@ export default defineComponent({
   computed: {
     ...mapStores(userStore, miscStore)
   },
-  created() {
-    this.getUserInfo()
+  async created() {
+    await this.getUserInfo()
     this.initForm()
   }
 })

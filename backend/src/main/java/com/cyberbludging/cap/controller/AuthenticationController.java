@@ -1,5 +1,6 @@
 package com.cyberbludging.cap.controller;
 
+import com.cyberbludging.cap.entity.dto.RegisterDTO;
 import com.cyberbludging.cap.entity.dto.UserAuthDTO;
 import com.cyberbludging.cap.service.AuthenticationService;
 import com.cyberbludging.cap.util.JwtUtil;
@@ -28,8 +29,8 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     @ApiOperation("用户注册")
-    public Result register(@RequestBody UserAuthDTO user) {
-        return loginService.register(user.getName(), user.getPassword());
+    public Result register(@RequestBody RegisterDTO user) {
+        return loginService.register(user.getName(), user.getPassword(), user.getPname(), user.getSubject(), user.getUserScore());
     }
 
     @GetMapping("/check")

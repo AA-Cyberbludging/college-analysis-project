@@ -22,9 +22,9 @@ public class AuthenticationService {
         }
     }
 
-    public Result register(String name, String password) {
+    public Result register(String name, String password, String pname, String subject, Integer userScore) {
         try {
-            userMapper.registerUser(name, password);
+            userMapper.registerUser(name, password, pname, subject, userScore);
             return Result.ok();
         } catch (Exception e) {
             return Result.error().setMessage("注册失败，用户名可能已被占用");

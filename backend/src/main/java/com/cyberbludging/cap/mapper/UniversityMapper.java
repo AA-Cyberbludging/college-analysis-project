@@ -17,8 +17,12 @@ import java.util.List;
 @Repository
 public interface UniversityMapper {
        //获取学校列表
-       @Select("SELECT uid, uname, pname, utype, upopularity FROM university")
+       @Select("SELECT uid, uname, pname, utype, upopularity FROM university ")
         List<UniversityDTO> getAllUniversity();
+       //通过地区和类型选择学校
+        @Select("SELECT uid, uname, pname, utype, upopularity FROM university "+
+                "WHERE pname = #{name} and utype = #{type}")
+        List<UniversityDTO> getUniversityByNameAndType(String name,String type);
         //获取各省份大学数量
         @Select("select * from province order by unum")
         List<Province> getUniversityCountBypName();
@@ -41,6 +45,9 @@ public interface UniversityMapper {
         @Select("SELECT sexRatio,employRate,shipmentRate,enrollmentRate FROM university " +
                 " WHERE uname = #{name}")
         University getUniversityRateByName(String name);
+        //按热度排序所有大学
+        @Select("select uid, uname, pname, utype, upopularity from university ORDER BY upopularity")
+        List<UniversityDTO> getUniversityOrderByPopularity();
 //************************后面的先预备着****************************//
         @Select("SELECT * FROM university" +
                 " WHERE pname = #{name}")
@@ -59,9 +66,6 @@ public interface UniversityMapper {
                 " WHERE year = 2022 and subject = #{subject} and umps < #{score} and pname = #{name}")
         University getUniversityByStudentInfo(Integer score,String subject,String name);
 
-        @Select("select upopularity"+
-                "from university GROUP BY upopularity = #{popularity} ORDER BY upopularity")
-        Integer getUniversityCountBypName(Double popularity);
         @Select("SELECT * FROM university" +
                 " WHERE utype = #{type}")
         University getUniversityBytype(String type);

@@ -8,10 +8,13 @@ import com.cyberbludging.cap.entity.dto.UniversityDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Mapper
+@Repository
 public interface UniversityMapper {
        //获取学校列表
        @Select("SELECT uid, uname, pname, utype, upopularity FROM university ")

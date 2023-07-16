@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @CrossOrigin
 public class AdministratorController {
 
-
+/*
     @GetMapping("/users")
     @ApiOperation("获取用户列表")
     public Result getUsers() {
@@ -73,6 +73,6 @@ public class AdministratorController {
     public Result manageDatabase() {
 
     }
-
+*/
 
 }

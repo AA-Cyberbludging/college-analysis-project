@@ -33,4 +33,14 @@ public interface UserMapper {
             "       subject = #{subject} " +
             " WHERE user_id = #{id}")
     void updateUserInfo(Integer id, String name, Integer score, String pname, String subject);
+
+    @Select("SELECT COUNT(*) FROM `user` " +
+            " WHERE user_id = #{id} " +
+            "   AND user_pswd = #{password}")
+    Integer verifyUserPassword(Integer id, String password);
+
+    @Update("UPDATE `user` " +
+            "   SET user_pswd = #{newPassword} " +
+            " WHERE user_id = #{id}")
+    void updateUserPassword(Integer id, String newPassword);
 }

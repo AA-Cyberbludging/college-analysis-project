@@ -23,4 +23,19 @@ public class UserService {
             return Result.error().setMessage("信息更新失败");
         }
     }
+
+    public Result updateUserPassword(Integer id, String oldPassword, String newPassword) {
+        int isOriginRight = userMapper.verifyUserPassword(id, oldPassword);
+        if (isOriginRight != 1) {
+            return Result.error().setMessage("原密码输入错误");
+        } else {
+            try {
+                userMapper.updateUserPassword(id, newPassword);
+                return Result.ok().setMessage("密码更新成功，请重新登录");
+            } catch (Exception e) {
+                return Result.error().setMessage("密码更新失败");
+            }
+        }
+
+    }
 }

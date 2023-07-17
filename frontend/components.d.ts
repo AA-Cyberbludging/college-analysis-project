@@ -10,6 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AdminMenu: typeof import('./src/components/utils/menu/AdminMenu.vue')['default']
+    BaseEchart: typeof import('./src/components/charts/BaseEchart.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -31,6 +32,7 @@ declare module '@vue/runtime-core' {
     HeaderBanner: typeof import('./src/components/utils/HeaderBanner.vue')['default']
     HeaderUserStatus: typeof import('./src/components/utils/HeaderUserStatus.vue')['default']
     Index: typeof import('./src/components/Index.vue')['default']
+    PieEchart: typeof import('./src/components/charts/PieEchart.vue')['default']
     Recommendation: typeof import('./src/components/user/Recommendation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

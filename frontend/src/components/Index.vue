@@ -8,6 +8,7 @@ export default defineComponent({ data() { return {} } })
     <div class="column left"></div>
     <div class="column middle"></div>
     <div class="column right"></div>
+    
   </div>
 </template>
 

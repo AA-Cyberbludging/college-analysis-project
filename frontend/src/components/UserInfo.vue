@@ -6,6 +6,7 @@ import { defineComponent } from 'vue';
 import { provinces } from '@/const'
 import { ElMessage } from 'element-plus';
 import { miscStore } from '@/store/misc';
+import { nowTimestamp } from '@/utils/time';
 export default defineComponent({
   data() {
     return {
@@ -22,7 +23,9 @@ export default defineComponent({
       newPasswordForm: {
         oldPassword: "",
         newPassword: "",
-      }
+      },
+      feedbackDialogVisible: false,
+      feedback: "",
     }
   },
   methods: {
@@ -53,8 +56,9 @@ export default defineComponent({
       try {
         const res = await axios.post(`/api/user/${this.userStore.userId}`, this.newUserInfoForm, {
           headers: {
-            Authorization: window.localStorage.getItem('cap-access')}
-          })
+            Authorization: window.localStorage.getItem('cap-access')
+          }
+        })
         if (res.data.success) {
           this.getUserInfo()
           this.$message.success("信息更新成功")
@@ -100,6 +104,26 @@ export default defineComponent({
         this.$message.error("请求失败: " + error.toString())
       }
       this.newPasswordForm.oldPassword = this.newPasswordForm.newPassword = ""
+    },
+    async submitFeedback() {
+      try {
+        const data = await axios.post('/api/feedback/add', {
+          userId: this.userStore.userId,
+          feedback: this.feedback,
+          time: nowTimestamp()
+        }, {
+          headers: { Authorization: window.localStorage.getItem('cap-access') }
+        })
+        if (data.data.success) {
+          this.$message.success("反馈成功")
+          this.feedback = ""
+          this.feedbackDialogVisible = false
+        } else {
+          this.$message.error(data.data.message)
+        }
+      } catch (error: any) {
+        this.$message.error("反馈提交失败")
+      }
     },
     logout() {
       this.miscStore.login = false
@@ -188,6 +212,11 @@ export default defineComponent({
           <el-button type="primary" @click="updateUserInfo">确认修改</el-button>
         </el-col>
       </el-row>
+      <el-row>
+        <el-col>
+          <el-button type="text" @click="feedbackDialogVisible = true" style="margin-bottom: 20px;">反馈</el-button>
+        </el-col>
+      </el-row>
     </div>
   </div>
 
@@ -205,6 +234,16 @@ export default defineComponent({
         <el-button @click="changePasswordDialogVisible = false,
           newPasswordForm.newPassword = newPasswordForm.oldPassword = ''">取消</el-button>
         <el-button type="primary" @click="changePassword">确认</el-button>
+      </span>
+    </template>
+  </el-dialog>
+
+  <el-dialog v-model="feedbackDialogVisible" title="用户反馈" style="max-width: 500px;">
+    <el-input v-model="feedback" autosize type="textarea" placeholder="请输入您的反馈" />
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="feedbackDialogVisible = false, feedback = ''">取消</el-button>
+        <el-button type="primary" @click="submitFeedback">提交</el-button>
       </span>
     </template>
   </el-dialog>

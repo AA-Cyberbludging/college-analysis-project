@@ -24,7 +24,7 @@ export default defineComponent({
 
 <style scoped>
 .card-container {
-  transition: all 0.2s ease-in;
+  transition: all 0.1s ease-in;
   padding-left: 20px;
   padding-top: 5px;
 }

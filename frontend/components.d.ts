@@ -29,6 +29,7 @@ declare module '@vue/runtime-core' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     Error: typeof import('./src/components/Error.vue')['default']
+    FeedbackManage: typeof import('./src/components/admin/FeedbackManage.vue')['default']
     HeaderBanner: typeof import('./src/components/utils/HeaderBanner.vue')['default']
     HeaderUserStatus: typeof import('./src/components/utils/HeaderUserStatus.vue')['default']
     Index: typeof import('./src/components/Index.vue')['default']

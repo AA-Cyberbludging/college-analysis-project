@@ -31,7 +31,8 @@ public class DisplayController {
     private AnalyseInfoService analyseInfoService;
     private AuthenticationService authenticationService;
     private UniCompareService uniCompareService;
-    private UniRecommendationService uniRecommendationService;
+
+    //private UniRecommendationService uniRecommendationService;
 
     @PostMapping("/{ProvinceAdmission}")
     @ApiOperation("展示各省份录取趋势")
@@ -98,7 +99,7 @@ public class DisplayController {
     }
 */
 
-    
+    /*
     @GetMapping("/{ByPosition}/recommend")
     @ApiOperation("按位置推荐")
     public List<University> recommend_ByPosition(@PathVariable ArrayList<University> uni, Province province){
@@ -128,7 +129,5 @@ public class DisplayController {
     public List<University> recommend_comprehensive(@PathVariable Integer score, String provinceName, String major, String subject){
         return uniRecommendationService.recommend_comprehensive(score,provinceName,major,subject);
     }
-
-
-
+    */
 }

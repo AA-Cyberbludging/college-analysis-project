@@ -3,7 +3,9 @@ import Index from '@c/Index.vue'
 import Error from '@c/Error.vue'
 import UserInfo from '@c/UserInfo.vue'
 import UInfoQuery from '@c/user/UniversityInfoQuery.vue'
+import UniManage from '@c/admin/UniversityManage.vue'
 import UserManage from '@c/admin/UserManage.vue'
+import FeedbackManage from '@c/admin/FeedbackManage.vue'
 import Recom from '@c/user/Recommendation.vue'
 
 
@@ -11,7 +13,9 @@ const routes = [
   { path: '/', component: Index },
   { path: '/userInfo', component: UserInfo },
   { path: '/uinfo', component: UInfoQuery },
+  { path: '/uni-manage', component: UniManage },
   { path: '/user-manage', component: UserManage },
+  { path: '/feedback-manage', component: FeedbackManage},
   { path: '/recom', component: Recom },
   { path: '/:catchAll(.*)', component: Error }
 ]

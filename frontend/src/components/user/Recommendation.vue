@@ -8,47 +8,18 @@ export default defineComponent({
 </script>
 
 <template>
-  
+  <div class="container">
+    <h3>?</h3>
+  </div>
 </template>
 
 <style scoped>
-.card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 300px;
-  width: 600px;
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.left,
-.right {
-  flex: 1;
-  height: 100%;
-  position: relative;
-}
-
-.left:before,
-.right:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50%;
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.left:before {
-  right: 50%;
-}
-
-.right:before {
-  left: 50%;
-}
-
-h2 {
-  text-align: center;
+.container {
+  margin-top: 50px;
+  display: inline-block;
+  min-width: 500px;
+  max-width: 1200px;
+  border-radius: 16px;
+  box-shadow: 0px 2px 20px gray;
 }
 </style>

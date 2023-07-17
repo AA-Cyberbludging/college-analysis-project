@@ -250,7 +250,7 @@ export default defineComponent({
         <base-echart :option="getEnrollmentRatioOption()"></base-echart>
       </div>
       <div v-else>
-        没有数据哦!
+        没有数据哦!🥺🥺🥺
       </div>
     </div>
   </div>

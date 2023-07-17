@@ -59,9 +59,9 @@ export default defineComponent({
     setFilter() {
 
       this.filteredUList = this.universityList.filter(x => {
-        return ((this.conditions.pname === "不限" ? true : (x.pname === this.conditions.pname)
-          && (this.conditions.is985 ? x.utype === "985" : true)
-          && x.uname.includes(this.conditions.uname.trim())))
+        return ( (this.conditions.pname === "不限" || x.pname === this.conditions.pname) &&
+      (!this.conditions.is985 || x.utype === "985") &&
+      (x.uname.includes(this.conditions.uname.trim())))
       })
       if (this.conditions.reorder) {
         this.filteredUList.sort((a, b) => b.upopularity - a.upopularity)
@@ -70,7 +70,7 @@ export default defineComponent({
     cleanCondition() {
       this.conditions = {
         uname: "",
-        pname: "",
+        pname: "不限",
         is985: false,
         reorder: false,
       }
@@ -127,7 +127,7 @@ export default defineComponent({
         <p>{{ universityDetail.uprofile }}</p>
       </div>
       <div v-else>
-        没有数据哦!
+        没有数据哦!🥺🥺🥺
       </div>
     </div>
   </div>

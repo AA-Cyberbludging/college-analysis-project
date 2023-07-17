@@ -4,11 +4,8 @@ package com.cyberbludging.cap.controller;
 import com.cyberbludging.cap.entity.MinimumPassingScore;
 import com.cyberbludging.cap.entity.Province;
 import com.cyberbludging.cap.entity.University;
-import com.cyberbludging.cap.entity.User;
-import com.cyberbludging.cap.entity.dto.PasswordDTO;
 import com.cyberbludging.cap.entity.dto.UniversityDTO;
 import com.cyberbludging.cap.service.*;
-import com.cyberbludging.cap.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import  com.cyberbludging.cap.entity.ProvinceAdmission;
 
 @Api(tags = "展示接口")
 @RestController
@@ -25,12 +23,20 @@ import java.util.List;
 public class DisplayController {
     @Autowired
     private DisplayInfoService displayInfoService;
+
+    @Autowired
+    private ProvinceAdmissionService provinceAdmissionService;
+
     private AnalyseInfoService analyseInfoService;
     private AuthenticationService authenticationService;
     private UniCompareService uniCompareService;
     private UniRecommendationService uniRecommendationService;
 
-
+    @PostMapping("/{ProvinceAdmission}")
+    @ApiOperation("展示各省份录取趋势")
+    public List<ProvinceAdmission> getAdmissionLine(){
+        return provinceAdmissionService.getalladmissionline();
+    }
 
     @PostMapping("/{MinimumPassingScore}")
     @ApiOperation("展示最低录取分数线")

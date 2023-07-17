@@ -48,20 +48,20 @@ export default defineComponent({
       try {
         const data = await axios.get(`/api/display/university/${this.selectedUid}`)
         this.universityDetail = data.data
+
       } catch (error: any) {
         this.$message.error("大学信息获取失败")
       }
     },
-    selectUniversity(index: number) {
+    async selectUniversity(index: number) {
       this.selectedUid = index;
-      this.getUniversityInfo()
+      await this.getUniversityInfo()
     },
     setFilter() {
-
       this.filteredUList = this.universityList.filter(x => {
-        return ( (this.conditions.pname === "不限" || x.pname === this.conditions.pname) &&
-      (!this.conditions.is985 || x.utype === "985") &&
-      (x.uname.includes(this.conditions.uname.trim())))
+        return ((this.conditions.pname === "不限" || x.pname === this.conditions.pname) &&
+          (!this.conditions.is985 || x.utype === "985") &&
+          (x.uname.includes(this.conditions.uname.trim())))
       })
       if (this.conditions.reorder) {
         this.filteredUList.sort((a, b) => b.upopularity - a.upopularity)
@@ -75,12 +75,134 @@ export default defineComponent({
         reorder: false,
       }
       this.filteredUList = this.universityList
-    }
-
+    },
+    getSexRatioOption() {
+      const male = this.universityDetail.sexRatio
+      const female = 1 - male
+      const ratio = (male / female).toFixed(2)
+      return {
+        title: {
+          text: `男女比例\n${ratio}:1`,
+          left: 'center',
+          top: 'center'
+        },
+        series: [
+          {
+            type: 'pie',
+            data: [
+              {
+                name: "男",
+                value: male,
+                itemStyle: { color: '#566EC4' },
+              },
+              {
+                name: "女",
+                value: female,
+                itemStyle: { color: '#EE6A6C' },
+              }
+            ],
+            radius: ['40%', '70%']
+          }
+        ],
+      }
+    },
+    getEmployRatioOption() {
+      const employ = this.universityDetail.employRate
+      const unemploy = 1 - employ
+      const ratio = (employ * 100).toFixed(1)
+      return {
+        title: {
+          text: `就业率\n${ratio}%`,
+          left: 'center',
+          top: 'center'
+        },
+        series: [
+          {
+            type: 'pie',
+            data: [
+              {
+                name: "就业",
+                value: employ,
+                itemStyle: { color: '#566EC4' },
+              },
+              {
+                name: "未就业",
+                value: unemploy,
+                itemStyle: { color: '#EE6A6C' },
+              }
+            ],
+            radius: ['40%', '70%']
+          }
+        ],
+      }
+    },
+    getShipmentRatioOption() {
+      const shipment = this.universityDetail.shipmentRate
+      const unshipment = 1 - shipment
+      const ratio = (shipment * 100).toFixed(1)
+      return {
+        title: {
+          text: `出国率\n${ratio}%`,
+          left: 'center',
+          top: 'center'
+        },
+        series: [
+          {
+            type: 'pie',
+            data: [
+              {
+                name: "选择出国",
+                value: shipment,
+                itemStyle: { color: '#566EC4' },
+              },
+              {
+                name: "不出国",
+                value: unshipment,
+                itemStyle: { color: '#EE6A6C' },
+              }
+            ],
+            radius: ['40%', '70%']
+          }
+        ],
+      }
+    },
+    getEnrollmentRatioOption() {
+      const enrollment = this.universityDetail.enrollmentRate
+      const unenrollment = 1 - enrollment
+      const ratio = (enrollment * 100).toFixed(1)
+      return {
+        title: {
+          text: `升学率\n${ratio}%`,
+          left: 'center',
+          top: 'center'
+        },
+        series: [
+          {
+            type: 'pie',
+            data: [
+              {
+                name: "升学",
+                value: enrollment,
+                itemStyle: { color: '#566EC4' },
+              },
+              {
+                name: "就业",
+                value: unenrollment,
+                itemStyle: { color: '#EE6A6C' },
+              }
+            ],
+            radius: ['40%', '70%']
+          }
+        ],
+      }
+    },
   },
   async created() {
     await this.getUniversityList()
     this.filteredUList = this.universityList
+  },
+  computed: {
+
   }
 })
 </script>
@@ -120,11 +242,12 @@ export default defineComponent({
         <h2>{{ universityList[selectedUid - 1].uname }}</h2>
         <p>{{ universityList[selectedUid - 1].utype }}</p>
         <p>{{ universityList[selectedUid - 1].pname }}</p>
-        <p>{{ universityDetail.sexRatio }}</p>
-        <p>{{ universityDetail.employRate }}</p>
-        <p>{{ universityDetail.shipmentRate }}</p>
-        <p>{{ universityDetail.enrollmentRate }}</p>
+
         <p>{{ universityDetail.uprofile }}</p>
+        <base-echart :option="getSexRatioOption()"></base-echart>
+        <base-echart :option="getEmployRatioOption()"></base-echart>
+        <base-echart :option="getShipmentRatioOption()"></base-echart>
+        <base-echart :option="getEnrollmentRatioOption()"></base-echart>
       </div>
       <div v-else>
         没有数据哦!🥺🥺🥺

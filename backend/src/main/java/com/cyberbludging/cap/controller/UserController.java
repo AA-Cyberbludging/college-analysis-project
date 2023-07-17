@@ -31,7 +31,7 @@ public class UserController {
     @ApiOperation("更新用户信息")
     Result updateUserInfo(@PathVariable Integer id,
                           @RequestBody User newInfo) {
-        return userService.updateUserInfo(id, newInfo.getUserName(), newInfo.getUserScore(), newInfo.getPname(), newInfo.getSubject());
+        return userService.updateUserInfo(id, newInfo.getUserName(), newInfo.getUserScore(), newInfo.getUserRank(), newInfo.getPname(), newInfo.getSubject());
     }
 
 

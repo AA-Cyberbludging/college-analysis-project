@@ -15,6 +15,7 @@ export default defineComponent({
       newUserInfoForm: {
         userName: "" as string,
         userScore: 0 as number,
+        userRank: 0 as number,
         pname: {} as string,
         subject: {} as string,
       },
@@ -26,10 +27,13 @@ export default defineComponent({
   },
   methods: {
     initForm() {
-      this.newUserInfoForm.userName = this.userStore.userName
-      this.newUserInfoForm.userScore = this.userStore.userScore
-      this.newUserInfoForm.pname = this.userStore.pname
-      this.newUserInfoForm.subject = this.userStore.subject
+      this.newUserInfoForm = {
+        userName: this.userStore.userName,
+        userScore: this.userStore.userScore,
+        userRank: this.userStore.userRank,
+        pname: this.userStore.pname,
+        subject: this.userStore.subject
+      }
     },
     async getUserInfo() {
       try {
@@ -147,6 +151,14 @@ export default defineComponent({
         </el-col>
         <el-col :span="12">
           <el-input v-model="newUserInfoForm.userScore" :disabled="!isChangable" />
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <p>位次: </p>
+        </el-col>
+        <el-col :span="12">
+          <el-input v-model="newUserInfoForm.userRank" :disabled="!isChangable" />
         </el-col>
       </el-row>
       <el-row>

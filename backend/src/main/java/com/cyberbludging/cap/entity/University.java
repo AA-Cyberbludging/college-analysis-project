@@ -7,6 +7,7 @@ public class University {
     private String utype;
     private Integer upopularity;
 
+    private String uprofile;
     private Double sexRatio;
     private Double employRate;
     private Double shipmentRate;
@@ -50,6 +51,14 @@ public class University {
 
     public void setUpopularity(Integer upopularity) {
         this.upopularity = upopularity;
+    }
+
+    public String getUprofile() {
+        return uprofile;
+    }
+
+    public void setUprofile(String uprofile) {
+        this.uprofile = uprofile;
     }
 
     public Double getSexRatio() {

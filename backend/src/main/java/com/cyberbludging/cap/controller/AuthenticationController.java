@@ -30,7 +30,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     @ApiOperation("用户注册")
     public Result register(@RequestBody RegisterDTO user) {
-        return loginService.register(user.getName(), user.getPassword(), user.getPname(), user.getSubject(), user.getUserScore());
+        return loginService.register(user.getName(), user.getPassword(), user.getPname(), user.getSubject(), user.getUserScore(), user.getUserRank());
     }
 
     @GetMapping("/check")

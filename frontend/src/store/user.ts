@@ -7,6 +7,7 @@ export const userStore = defineStore('user', {
       userName: {} as string,
       isStudent: {} as boolean,
       userScore: {} as number,
+      userRank: {} as number,
       pname: {} as string,
       subject: {} as string,
     }

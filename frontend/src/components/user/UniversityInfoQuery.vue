@@ -16,6 +16,7 @@ type UniversityDetail = {
   employRate: number,
   shipmentRate: number,
   enrollmentRate: number,
+  uprofile: string,
 }
 
 export default defineComponent({
@@ -123,6 +124,7 @@ export default defineComponent({
         <p>{{ universityDetail.employRate }}</p>
         <p>{{ universityDetail.shipmentRate }}</p>
         <p>{{ universityDetail.enrollmentRate }}</p>
+        <p>{{ universityDetail.uprofile }}</p>
       </div>
       <div v-else>
         没有数据哦!

@@ -91,7 +91,7 @@ public class DisplayController {
     }
 */
 
-
+    
     @GetMapping("/{ByPosition}/recommend")
     @ApiOperation("按位置推荐")
     public List<University> recommend_ByPosition(@PathVariable ArrayList<University> uni, Province province){

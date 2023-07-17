@@ -15,9 +15,9 @@ public class UserService {
         return userMapper.getUserInfo(id);
     }
 
-    public Result updateUserInfo(Integer id, String name, Integer score, String pname, String subject) {
+    public Result updateUserInfo(Integer id, String name, Integer score, Integer rank, String pname, String subject) {
         try {
-            userMapper.updateUserInfo(id, name, score, pname, subject);
+            userMapper.updateUserInfo(id, name, score, rank, pname, subject);
             return Result.ok();
         } catch (Exception e) {
             return Result.error().setMessage("信息更新失败");

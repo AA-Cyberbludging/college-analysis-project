@@ -11,7 +11,10 @@ public class RegisterDTO {
 
     private Integer userScore;
 
+    private Integer userRank;
+
     private String subject;
+
 
     public String getName() {
         return name;
@@ -51,6 +54,14 @@ public class RegisterDTO {
 
     public void setUserScore(Integer userScore) {
         this.userScore = userScore;
+    }
+
+    public Integer getUserRank() {
+        return userRank;
+    }
+
+    public void setUserRank(Integer userRank) {
+        this.userRank = userRank;
     }
 
     public String getSubject() {

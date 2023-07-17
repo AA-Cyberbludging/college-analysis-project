@@ -46,7 +46,7 @@ public interface UniversityMapper {
         University getUniversityByName(String name);
         */
         //获取某大学的男女比率，就业率，升学率，国内就业率
-        @Select("SELECT sex_ratio, employ_rate, shipment_rate, enrollment_rate FROM university " +
+        @Select("SELECT sex_ratio, employ_rate, shipment_rate, enrollment_rate, uprofile FROM university " +
                 " WHERE uname = #{name}")
         University getUniversityRateByName(String name);
         //按热度排序所有大学

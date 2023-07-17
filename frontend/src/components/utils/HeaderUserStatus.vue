@@ -24,6 +24,7 @@ export default defineComponent({
         pname: "",
         subject: "理科",
         userScore: 0 as number,
+        userRank: 0 as number,
       },
       provinces: provinces
     }
@@ -97,6 +98,7 @@ export default defineComponent({
           this.registerForm.pname = ""
           this.registerForm.subject = "理科"
           this.registerForm.userScore = 0
+          this.registerForm.userRank = 0
         } else {
           this.$message.error(registerResult.data.message)
         }
@@ -109,6 +111,7 @@ export default defineComponent({
       this.$message.success("您已成功退出")
       this.$router.replace('/')
       window.localStorage.clear() // ...
+      this.userStore.isStudent = true
     }
   },
   computed: {
@@ -178,6 +181,9 @@ export default defineComponent({
         </el-form-item>
         <el-form-item label="分数">
           <el-input v-model="registerForm.userScore" />
+        </el-form-item>
+        <el-form-item label="位次">
+          <el-input v-model="registerForm.userRank" />
         </el-form-item>
         <el-button type="primary" @click="register" style="margin: 20px;">注册</el-button>
       </el-form>

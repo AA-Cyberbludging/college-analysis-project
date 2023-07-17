@@ -5,6 +5,7 @@ import com.cyberbludging.cap.entity.MinimumPassingScore;
 import com.cyberbludging.cap.entity.Province;
 import com.cyberbludging.cap.entity.University;
 import com.cyberbludging.cap.entity.dto.UniversityDTO;
+import com.cyberbludging.cap.entity.dto.UpopularityDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public interface UniversityMapper {
         List<UniversityDTO> getUniversityByNameAndType(String name,String type);
         */
         //获取各省份大学数量
-        @Select("select * from province order by unum")
+        @Select("select * from province order by unum desc ")
         List<Province> getUniversityCountBypName();
         //获取某大学招生计划
         @Select("SELECT * FROM enrollment_plan " +
@@ -50,12 +51,12 @@ public interface UniversityMapper {
                 " WHERE uname = #{name}")
         University getUniversityRateByName(String name);
         //按热度排序所有大学
-        /*
-        @Select("select uid, uname, pname, utype, upopularity from university " +
+
+        @Select("select uid, uname, upopularity from university " +
                 " where upopularity is not null" +
-                " order by upopularity")
-        List<UniversityDTO> getUniversityOrderByPopularity();
-        */
+                " order by upopularity desc ")
+        List<UpopularityDTO> getUniversityOrderByPopularity();
+
 //************************后面的先预备着****************************//
         /*
         @Select("SELECT * FROM university" +

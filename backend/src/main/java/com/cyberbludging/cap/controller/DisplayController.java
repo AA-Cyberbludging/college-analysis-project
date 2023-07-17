@@ -7,6 +7,7 @@ import com.cyberbludging.cap.entity.University;
 import com.cyberbludging.cap.entity.User;
 import com.cyberbludging.cap.entity.dto.PasswordDTO;
 import com.cyberbludging.cap.entity.dto.UniversityDTO;
+import com.cyberbludging.cap.entity.dto.UpopularityDTO;
 import com.cyberbludging.cap.service.*;
 import com.cyberbludging.cap.util.Result;
 import io.swagger.annotations.Api;
@@ -60,15 +61,15 @@ public class DisplayController {
     }
     */
 
-    /*
-    @GetMapping("/{rankByPopularity}")
+
+    @GetMapping("/university/popularity")
     @ApiOperation("获取大学热度排名")
-    public List<UniversityDTO> rankByPopularity(){
+    public List<UpopularityDTO> rankByPopularity(){
         return displayInfoService.rankByPopularity();
     }
-    */
 
-    @GetMapping("/{rankByProvince}")
+
+    @GetMapping("/province")
     @ApiOperation("获取大学省份数量排名")
     public List<Province> rankByProvince(){
         return displayInfoService.rankByProvince();

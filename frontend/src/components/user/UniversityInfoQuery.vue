@@ -33,6 +33,8 @@ export default defineComponent({
         reorder: false,
       },
       filteredUList: [] as UniversityList[],
+      badgePath: "",
+      enrollmentDialogVisible: false,
     }
   },
   methods: {
@@ -48,7 +50,7 @@ export default defineComponent({
       try {
         const data = await axios.get(`/api/display/university/${this.selectedUid}`)
         this.universityDetail = data.data
-
+        console.log(this.universityDetail)
       } catch (error: any) {
         this.$message.error("大学信息获取失败")
       }
@@ -56,6 +58,7 @@ export default defineComponent({
     async selectUniversity(index: number) {
       this.selectedUid = index;
       await this.getUniversityInfo()
+      this.getImageUri()
     },
     setFilter() {
       this.filteredUList = this.universityList.filter(x => {
@@ -196,6 +199,12 @@ export default defineComponent({
         ],
       }
     },
+    getImageUri() {
+      this.badgePath = `../../src/assets/badge/${this.selectedUid}.jpg`
+    },
+    getEnrollmentPlan() {
+
+    }
   },
   async created() {
     await this.getUniversityList()
@@ -209,50 +218,101 @@ export default defineComponent({
 
 
 <template>
-  <div class="container">
-    <div class="left">
-      <div class="form">
-        <el-form :model="conditions">
-          <el-form-item label="大学名">
-            <el-input v-model="conditions.uname"></el-input>
-          </el-form-item>
-          <el-form-item label="所在省份">
-            <el-select v-model="conditions.pname" placeholder="不限">
-              <el-option label="不限" value="不限" />
-              <el-option v-for="(item, _) in provinces" :label="item" :value="item" />
-            </el-select>
-          </el-form-item>
-          <el-checkbox v-model="conditions.is985" label="985" />
-          <el-checkbox v-model="conditions.reorder" label="按热度排序" style="margin-bottom: 20px;" />
-          <el-button style="margin-left: 45px;" @click="cleanCondition">重置</el-button>
-          <el-button style="margin-left: 45px;" type="primary" @click="setFilter">筛选</el-button>
-          <el-divider></el-divider>
-        </el-form>
-      </div>
-      <ul>
-        <li>
-          <UniversityListCard v-for="(university, index) in filteredUList" :key="index" :uname="university.uname"
-            :utype="university.utype" :pname="university.pname" :upopularity="university.upopularity"
-            @click="selectUniversity(university.uid)" />
-        </li>
-      </ul>
-    </div>
-    <div class="right">
-      <div v-if="selectedUid !== 0">
-        <h2>{{ universityList[selectedUid - 1].uname }}</h2>
-        <p>{{ universityList[selectedUid - 1].utype }}</p>
-        <p>{{ universityList[selectedUid - 1].pname }}</p>
+  <div class="common-layout">
+    <el-container style="padding-top: 20px; max-height: 90vh;">
+      <el-aside width="300px" style="border-right: 1px gray solid;">
+        <div class="form">
+          <el-form :model="conditions">
+            <el-form-item label="大学名">
+              <el-input v-model="conditions.uname"></el-input>
+            </el-form-item>
+            <el-form-item label="所在省份">
+              <el-select v-model="conditions.pname" placeholder="不限">
+                <el-option label="不限" value="不限" />
+                <el-option v-for="(item, _) in provinces" :label="item" :value="item" />
+              </el-select>
+            </el-form-item>
+            <el-checkbox v-model="conditions.is985" label="985" />
+            <el-checkbox v-model="conditions.reorder" label="按热度排序" style="margin-bottom: 20px;" />
+            <el-button style="margin-left: 45px;" @click="cleanCondition">重置</el-button>
+            <el-button style="margin-left: 45px;" type="primary" @click="setFilter">筛选</el-button>
+            <el-divider></el-divider>
+          </el-form>
+        </div>
+        <ul>
+          <li>
+            <UniversityListCard v-for="(university, index) in filteredUList" :key="index" :uname="university.uname"
+              :utype="university.utype" :pname="university.pname" :upopularity="university.upopularity"
+              @click="selectUniversity(university.uid)" />
+          </li>
+        </ul>
+      </el-aside>
+      <el-main>
+        <div v-if="selectedUid !== 0">
+          <el-row style="background-color: rgb(247, 247, 247);">
+            <el-col>
+              <el-image src="../../src/assets/landscape/1.jpg" fit="scale-down" style="max-height: 100px;">
 
-        <p>{{ universityDetail.uprofile }}</p>
-        <base-echart :option="getSexRatioOption()"></base-echart>
-        <base-echart :option="getEmployRatioOption()"></base-echart>
-        <base-echart :option="getShipmentRatioOption()"></base-echart>
-        <base-echart :option="getEnrollmentRatioOption()"></base-echart>
-      </div>
-      <div v-else>
-        没有数据哦!🥺🥺🥺
-      </div>
-    </div>
+              </el-image>
+              <!-- <img src="@/assets/landscape/1.jpg" style="height: 100px; object-fit: fill;" /> -->
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <el-image :src="badgePath" class="badge">
+                <template #error>
+                  <div class="image-slot">
+                    <el-image src="../../src/assets/badge/fallback.jpg" fit="scale-down" />
+                  </div>
+                </template>
+              </el-image>
+            </el-col>
+            <el-col :span="12">
+              <p style="font-size: 250%; padding-left: 20px; padding-top: 20px;">{{ universityList[selectedUid - 1].uname
+              }}</p>
+            </el-col>
+            <el-col :span="3">
+              <div style="margin-top: 76px;">
+                <span class="tag">{{ universityList[selectedUid - 1].utype }}</span>
+                <span class="tag">{{ universityList[selectedUid - 1].pname }}</span>
+              </div>
+            </el-col>
+            <el-col :span="3">
+              <el-button type="primary" style="margin-top: 71px;">招生计划</el-button>
+            </el-col>
+          </el-row>
+          <div v-if="universityDetail.sexRatio !== null">
+            <p class="profile">{{ universityDetail.uprofile }}</p>
+            <el-row>
+              <el-col :span="12">
+                <base-echart :option="getSexRatioOption()" width="400px"></base-echart>
+
+              </el-col>
+              <el-col :span="12">
+                <base-echart :option="getEmployRatioOption()" width="400px"></base-echart>
+
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <base-echart :option="getShipmentRatioOption()" width="400px"></base-echart>
+
+              </el-col>
+              <el-col :span="12">
+                <base-echart :option="getEnrollmentRatioOption()" width="400px"></base-echart>
+
+              </el-col>
+            </el-row>
+          </div>
+          <div v-else style="text-align: center; margin-top: 150px;">
+            <strong style="font-size: 300%;">暂无数据</strong>
+          </div>
+        </div>
+        <div v-else>
+          👈从左边选择一个学校吧！
+        </div>
+      </el-main>
+    </el-container>
   </div>
 </template>
 
@@ -268,25 +328,35 @@ li {
   list-style: none;
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-}
-
-.left {
-  background-color: white;
-  width: 30%;
-  max-width: 300px;
-  min-width: 300px;
-}
-
-.right {
-  background-color: rgb(250, 250, 250);
-  flex: 1;
+.tag {
+  background-color: rgb(53, 141, 241);
+  color: white;
+  border-radius: 4px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 90%;
+  margin: 5px;
 }
 
 .form {
   margin-left: 20px;
   margin-right: 20px;
+}
+
+.badge {
+  margin-left: 40px;
+  margin-top: -60px;
+  border-radius: 16px;
+  box-shadow: 1px 3px 3px gray;
+  height: 200px;
+  width: 200px;
+}
+
+.profile {
+  background-color: rgb(241, 241, 241);
+  padding: 10px;
+  text-indent: 2em;
+  border-radius: 10px;
 }
 </style>

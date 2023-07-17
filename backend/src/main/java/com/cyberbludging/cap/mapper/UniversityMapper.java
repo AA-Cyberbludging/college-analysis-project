@@ -9,9 +9,7 @@ import com.cyberbludging.cap.entity.dto.UniversityDTO;
 import com.cyberbludging.cap.entity.dto.UpopularityDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -53,11 +51,11 @@ public interface UniversityMapper {
         University getUniversityRateByName(String name);
 
         //获取近三年大学平均最低录取分及录取名次
-        @Select("SELECT uid, AVG(umps) AS averagePassingScore, AVG(rank) AS averagePassingRank FROM mps" +
+        @Select("SELECT uid, AVG(umps) AS averagePassingScore, AVG(rank) AS averagePassingRank FROM mps " +
                 "GROUP BY uid")
         List<MPSDTO> getAvg();
-        //按热度排序所有大学
 
+        //按热度排序所有大学
         @Select("select uid, uname, upopularity from university " +
                 " where upopularity is not null" +
                 " order by upopularity desc ")
@@ -83,8 +81,9 @@ public interface UniversityMapper {
                 " WHERE year = 2022 and subject = #{subject} and umps < #{score} and pname = #{name}")
         University getUniversityByStudentInfo(Integer score,String subject,String name);
 
+        /*
         @Select("SELECT * FROM university" +
                 " WHERE utype = #{type}")
         University getUniversityBytype(String type);
-
+        */
 }

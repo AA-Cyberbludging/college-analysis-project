@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.text.NumberFormat;
 
-@Service
+//@Service
 public class UniRecommendationService {
 
-    @Autowired
+    //@Autowired
     private UniversityMapper universityMapper;
 
     enum recommendType{

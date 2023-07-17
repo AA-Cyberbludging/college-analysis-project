@@ -1,24 +1,26 @@
 package com.cyberbludging.cap.entity;
 
-import java.sql.Time;
-
 public class Feedback {
-    private Integer feedbackId;
+    private Integer fbId;
 
     private Integer userId;
 
     private String feedback;
 
-    private Time time;
+    private Long timestamp;
 
-    private Boolean feedbackDeal;
+    private Boolean fbDeal;
 
-    public Integer getFeedbackId() {
-        return feedbackId;
+    // 以下属性未出现在表中
+
+    private String userName;
+
+    public Integer getFbId() {
+        return fbId;
     }
 
-    public void setFeedbackId(Integer feedbackId) {
-        this.feedbackId = feedbackId;
+    public void setFbId(Integer fbId) {
+        this.fbId = fbId;
     }
 
     public Integer getUserId() {
@@ -37,30 +39,38 @@ public class Feedback {
         this.feedback = feedback;
     }
 
-    public Time getTime() {
-        return time;
+    public Long getTimestamp() {
+        return timestamp;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public Boolean getFeedbackDeal() {
-        return feedbackDeal;
+    public Boolean getFbDeal() {
+        return fbDeal;
     }
 
-    public void setFeedbackDeal(Boolean feedbackDeal) {
-        this.feedbackDeal = feedbackDeal;
+    public void setFbDeal(Boolean fbDeal) {
+        this.fbDeal = fbDeal;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override
     public String toString() {
         return "Feedback{" +
-                "feedbackId=" + feedbackId +
+                "feedbackId=" + fbId +
                 ", userId=" + userId +
                 ", feedback='" + feedback + '\'' +
-                ", time=" + time +
-                ", feedbackDeal=" + feedbackDeal +
+                ", time=" + timestamp +
+                ", feedbackDeal=" + fbDeal +
                 '}';
     }
 }

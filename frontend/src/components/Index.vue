@@ -1,5 +1,7 @@
 <script lang="ts">
 import axios from 'axios';
+import * as echarts from 'echarts';
+import "echarts";
 import { defineComponent } from 'vue';
 
 type Province = {
@@ -17,9 +19,15 @@ export default defineComponent({
     return {
       provinceList: [] as Province[],
       popularityList: [] as Popularity[],
+      mapLoaded: false,
     }
   },
   methods: {
+    async registerMap() {
+      const mapRawData = await axios.get('https://geojson.cn/api/data/china.json')
+      echarts.registerMap('china', mapRawData.data)
+      this.mapLoaded = true
+    },
     async getProvinceList() {
       try {
         const data = await axios.get('/api/display/province')
@@ -31,6 +39,31 @@ export default defineComponent({
     getProvinceListOption() {
       return {
 
+      }
+    },
+    getMapChartOption() {
+      const dataList = this.provinceList.map(x => {
+        return {
+          name: x.pname,
+          value: x.unum
+        }
+      })
+      return {
+        title: {
+          name: "test",
+          text: "中国 985/211 高校分布",
+          left: "center"
+        },
+        tooltip: {
+          trigger: 'item',
+          showDelay: 0,
+          transitionDuration: 0.2
+        },
+        series: [{
+          type: 'map',
+          map: 'china',
+          data: dataList
+        }]
       }
     },
     async getPopularityList() {
@@ -71,7 +104,7 @@ export default defineComponent({
             type: "bar",
             data: dataList,
             itemStyle: {
-              color: '#3165BE'
+              color: '#BA2A17'
             },
             label: {
               show: true,
@@ -81,9 +114,10 @@ export default defineComponent({
           }
         ]
       }
-    }
+    },
   },
   async created() {
+    await this.registerMap()
     await this.getProvinceList()
     await this.getPopularityList()
   }
@@ -93,15 +127,26 @@ export default defineComponent({
 <template>
   <div class="container">
     <div class="column left">
-
-    </div>
-    <div class="column middle"></div>
-    <div class="column right">
+      <div class="chart-grid">
+        <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
+      </div>
       <div class="chart-grid">
         <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
       </div>
     </div>
-
+    <div class="column middle">
+      <div class="chart-grid">
+        <base-echart :option="getMapChartOption()" v-if="mapLoaded" style="padding-top: 200px;"/>
+      </div>
+    </div>
+    <div class="column right">
+      <div class="chart-grid">
+        <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
+      </div>
+      <div class="chart-grid">
+        <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -109,31 +154,25 @@ export default defineComponent({
 .container {
   display: flex;
   flex-direction: row;
-  height: 100vh;
-  /* 清除浮动 */
+  height: 91vh;
 }
 
 .column {
-  /* 设置高度，便于查看效果 */
   float: left;
-  /* 设置浮动 */
 }
 
 .left {
   width: 27%;
-  /* 左侧栏宽度 */
   background-color: #ccc;
 }
 
 .middle {
   width: 46%;
-  /* 中间栏宽度 */
   background-color: #ddd;
 }
 
 .right {
   width: 27%;
-  /* 右侧栏宽度 */
   background-color: #ccc;
 }
 

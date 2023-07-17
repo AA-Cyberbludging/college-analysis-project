@@ -158,5 +158,4 @@ public class UniRecommendationService {
 
         return percentFormat.format(num);
     }
-
 }

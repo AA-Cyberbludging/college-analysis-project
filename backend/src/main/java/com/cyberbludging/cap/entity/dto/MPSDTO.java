@@ -10,5 +10,4 @@ public class MPSDTO {
     public Integer getAveragePassingScore(){ return averagePassingScore; }
     public Integer getAveragePassingRank(){ return averagePassingRank; }
 
-
 }

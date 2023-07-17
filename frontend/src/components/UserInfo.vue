@@ -53,6 +53,14 @@ export default defineComponent({
       this.isChangable = true;
     },
     async updateUserInfo() {
+      if (this.newUserInfoForm.userScore < 400 || this.newUserInfoForm.userScore > 750) {
+        this.$message.error("请输入正确范围内的分数 (400~750)")
+        return
+      }
+      if (this.newUserInfoForm.userRank < 0) {
+        this.$message.error("请输入正确的位次")
+        return
+      }
       try {
         const res = await axios.post(`/api/user/${this.userStore.userId}`, this.newUserInfoForm, {
           headers: {
@@ -67,6 +75,7 @@ export default defineComponent({
           this.$message.error("信息更新失败")
         }
       } catch (error: any) {
+        this.restoreUserForm()
         this.$message.error("信息更新失败")
       }
       this.isChangable = false;

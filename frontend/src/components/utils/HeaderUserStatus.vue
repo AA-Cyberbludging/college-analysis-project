@@ -87,18 +87,24 @@ export default defineComponent({
         this.$message.error("请输入正确范围内的分数 (400~750)")
         return
       }
+      if (this.registerForm.userRank < 1) {
+        this.$message.error("请输入正确的位次")
+        return
+      }
       try {
         const registerResult = await axios.post('/api/auth/register', this.registerForm)
         if (registerResult.data.success === true) {
           this.$message.success("注册成功，请重新登录")
           this.registerDialogVisible = false
-          this.registerForm.name = ""
-          this.registerForm.password = ""
-          this.registerForm.confirmedPassword = ""
-          this.registerForm.pname = ""
-          this.registerForm.subject = "理科"
-          this.registerForm.userScore = 0
-          this.registerForm.userRank = 0
+          this.registerForm = {
+            name: "",
+            password: "",
+            confirmedPassword: "",
+            pname: "",
+            subject: "理科",
+            userScore: 0,
+            userRank: 0
+          }
         } else {
           this.$message.error(registerResult.data.message)
         }
@@ -142,7 +148,7 @@ export default defineComponent({
           <el-input v-model="loginForm.name" />
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="loginForm.password" type="password" />
+          <el-input v-model="loginForm.password" type="password" show-password/>
         </el-form-item>
         <el-row justify="center">
           <el-col :span="8">
@@ -163,10 +169,10 @@ export default defineComponent({
           <el-input v-model="registerForm.name" />
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="registerForm.password" type="password" />
+          <el-input v-model="registerForm.password" type="password" show-password />
         </el-form-item>
         <el-form-item label="确认密码">
-          <el-input v-model="registerForm.confirmedPassword" type="password" />
+          <el-input v-model="registerForm.confirmedPassword" type="password" show-password />
         </el-form-item>
         <el-form-item label="省份">
           <el-select v-model="registerForm.pname" placeholder="无">

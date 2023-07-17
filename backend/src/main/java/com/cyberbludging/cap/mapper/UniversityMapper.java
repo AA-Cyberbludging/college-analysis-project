@@ -50,7 +50,6 @@ public interface UniversityMapper {
         @Select("SELECT sex_ratio, employ_rate, shipment_rate, enrollment_rate FROM university " +
                 " WHERE uname = #{name}")
         University getUniversityRateByName(String name);
-
         //获取近三年大学平均最低录取分及录取名次
         @Select("SELECT uid, AVG(umps) AS averagePassingScore, AVG(rank) AS averagePassingRank FROM mps" +
                 "GROUP BY uid")

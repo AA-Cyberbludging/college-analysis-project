@@ -157,7 +157,6 @@ public class UniRecommendationService {
         percentFormat.setMaximumFractionDigits(2);
 
         return percentFormat.format(num);
-
     }
 
 }

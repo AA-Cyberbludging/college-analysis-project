@@ -26,6 +26,7 @@ public class DisplayInfoService {
     public University searchById(Integer id){
 
         return universityMapper.getUniversityByID(id);
+
     }
 
     /*按地区和类型查找大学

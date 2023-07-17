@@ -4,6 +4,7 @@ import com.cyberbludging.cap.entity.EnrollmentPlan;
 import com.cyberbludging.cap.entity.MinimumPassingScore;
 import com.cyberbludging.cap.entity.Province;
 import com.cyberbludging.cap.entity.University;
+import com.cyberbludging.cap.entity.dto.MPSDTO;
 import com.cyberbludging.cap.entity.dto.UniversityDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -49,6 +50,11 @@ public interface UniversityMapper {
         @Select("SELECT sex_ratio, employ_rate, shipment_rate, enrollment_rate FROM university " +
                 " WHERE uname = #{name}")
         University getUniversityRateByName(String name);
+
+        //获取近三年大学平均最低录取分及录取名次
+        @Select("SELECT uid, AVG(umps) AS averagePassingScore, AVG(rank) AS averagePassingRank FROM mps" +
+                "GROUP BY uid")
+        List<MPSDTO> getAvg();
         //按热度排序所有大学
         /*
         @Select("select uid, uname, pname, utype, upopularity from university " +

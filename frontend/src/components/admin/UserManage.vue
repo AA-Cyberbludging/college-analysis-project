@@ -108,7 +108,7 @@ export default defineComponent({
 
 <template>
   <h2 style="text-align: center;">用户管理</h2>
-  <el-table :data="userList" style="width: auto;" :max-height="800" stripe>
+  <el-table :data="userList" style="width: auto; padding-left: 50px; padding-right: 50px;" :max-height="800" stripe>
     <el-table-column prop="userId" label="ID" />
     <el-table-column prop="userName" label="用户名" />
     <el-table-column prop="pname" label="省份" />

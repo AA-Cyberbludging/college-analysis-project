@@ -152,90 +152,68 @@ export default defineComponent({
 <template>
   <div class="center-container">
     <div class="container">
-      <h2>考生信息</h2>
-
-      <el-row style="min-width: 400px;">
-        <el-col :span="12">
-          <p>ID: </p>
-        </el-col>
-        <el-col :span="12">
-          <p>{{ userStore.userId }} </p>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <p>用户名: </p>
-        </el-col>
-        <el-col :span="12">
-          <el-input v-model="newUserInfoForm.userName" :disabled="!isChangable" />
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <p>省份: </p>
-        </el-col>
-        <el-select v-model="newUserInfoForm.pname" placeholder="无">
-          <el-option v-for="(item, _) in provinces" :label="item" :value="item" :disabled="!isChangable" />
-        </el-select>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <p>分数: </p>
-        </el-col>
-        <el-col :span="12">
-          <el-input v-model="newUserInfoForm.userScore" :disabled="!isChangable" />
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <p>位次: </p>
-        </el-col>
-        <el-col :span="12">
-          <el-input v-model="newUserInfoForm.userRank" :disabled="!isChangable" />
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <p>文理: </p>
-        </el-col>
-        <el-col :span="12">
-          <el-radio-group v-model="newUserInfoForm.subject" style="margin-bottom: 40px; " :disabled="!isChangable">
-            <el-radio-button label="文科" />
-            <el-radio-button label="理科" />
-          </el-radio-group>
-        </el-col>
-      </el-row>
-      <el-row style="margin-bottom: 40px;" v-if="!isChangable">
-        <el-col :span="12">
-          <el-button @click="changePasswordDialogVisible = true">修改密码</el-button>
-        </el-col>
-        <el-col :span="12">
-          <el-button type="primary" @click="changeInfo">修改基本信息</el-button>
-        </el-col>
-      </el-row>
-      <el-row style="margin-bottom: 40px;" v-else>
-        <el-col :span="12">
-          <el-button @click="restoreUserForm">取消</el-button>
-        </el-col>
-        <el-col :span="12">
-          <el-button type="primary" @click="updateUserInfo">确认修改</el-button>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col>
-          <el-button type="text" @click="feedbackDialogVisible = true" style="margin-bottom: 20px;">反馈</el-button>
-        </el-col>
-      </el-row>
+      <div v-if="userStore.isStudent">
+        <h2>考生信息</h2>
+        <el-form v-model="newUserInfoForm" :disabled="!isChangable" style="padding: 20px;" label-width="60px">
+          <el-form-item label="用户名">
+            <el-input v-model="newUserInfoForm.userName" />
+          </el-form-item>
+          <el-form-item label="省份">
+            <el-select v-model="newUserInfoForm.pname">
+              <el-option v-for="(item, _) in provinces" :label="item" :value="item" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="分数">
+            <el-input v-model="newUserInfoForm.userScore" />
+          </el-form-item>
+          <el-form-item label="位次">
+            <el-input v-model="newUserInfoForm.userRank" />
+          </el-form-item>
+          <el-form-item label="文理">
+            <el-select v-model="newUserInfoForm.subject">
+              <el-option label="文科" value="文科" />
+              <el-option label="理科" value="理科" />
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <el-row style="margin-bottom: 40px;" v-if="!isChangable">
+          <el-col :span="12">
+            <el-button @click="changePasswordDialogVisible = true">修改密码</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button type="primary" @click="changeInfo">修改基本信息</el-button>
+          </el-col>
+        </el-row>
+        <el-row style="margin-bottom: 40px;" v-else>
+          <el-col :span="12">
+            <el-button @click="restoreUserForm">取消</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button type="primary" @click="updateUserInfo">确认修改</el-button>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
+            <el-button type="text" @click="feedbackDialogVisible = true">反馈</el-button>
+          </el-col>
+        </el-row>
+      </div>
+      <div v-else>
+        <h2>管理员信息</h2>
+        <p>ID: {{ userStore.userId }}</p>
+        <p>用户名: {{ userStore.userName }}</p>
+        <el-button @click="changePasswordDialogVisible = true">修改密码</el-button>
+      </div>
     </div>
   </div>
 
   <el-dialog v-model="changePasswordDialogVisible" title="修改密码" style="max-width: 500px;">
     <el-form :model="newPasswordForm">
       <el-form-item label="旧密码">
-        <el-input v-model="newPasswordForm.oldPassword" type="password"></el-input>
+        <el-input v-model="newPasswordForm.oldPassword" type="password" show-password></el-input>
       </el-form-item>
       <el-form-item label="新密码">
-        <el-input v-model="newPasswordForm.newPassword" type="password"></el-input>
+        <el-input v-model="newPasswordForm.newPassword" type="password" show-password></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -266,9 +244,10 @@ export default defineComponent({
 .container {
   margin-top: 50px;
   display: inline-block;
-  min-width: 500px;
+  min-width: 300px;
   max-width: 1200px;
   border-radius: 16px;
-  box-shadow: 0px 2px 20px gray;
+  box-shadow: 2px 3px 10px gray;
+  padding: 50px;
 }
 </style>

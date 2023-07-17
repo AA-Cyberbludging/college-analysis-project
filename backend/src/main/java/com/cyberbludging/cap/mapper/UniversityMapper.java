@@ -81,8 +81,9 @@ public interface UniversityMapper {
                 " WHERE year = 2022 and subject = #{subject} and umps < #{score} and pname = #{name}")
         University getUniversityByStudentInfo(Integer score,String subject,String name);
 
+        /*
         @Select("SELECT * FROM university" +
                 " WHERE utype = #{type}")
         University getUniversityBytype(String type);
-
+        */
 }

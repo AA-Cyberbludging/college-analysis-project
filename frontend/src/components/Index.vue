@@ -127,7 +127,12 @@ export default defineComponent({
 <template>
   <div class="container">
     <div class="column left">
-
+      <div class="chart-grid">
+        <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
+      </div>
+      <div class="chart-grid">
+        <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
+      </div>
     </div>
     <div class="column middle">
       <div class="chart-grid">
@@ -138,8 +143,10 @@ export default defineComponent({
       <div class="chart-grid">
         <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
       </div>
+      <div class="chart-grid">
+        <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -147,31 +154,25 @@ export default defineComponent({
 .container {
   display: flex;
   flex-direction: row;
-  height: 100vh;
-  /* 清除浮动 */
+  height: 91vh;
 }
 
 .column {
-  /* 设置高度，便于查看效果 */
   float: left;
-  /* 设置浮动 */
 }
 
 .left {
   width: 27%;
-  /* 左侧栏宽度 */
   background-color: #ccc;
 }
 
 .middle {
   width: 46%;
-  /* 中间栏宽度 */
   background-color: #ddd;
 }
 
 .right {
   width: 27%;
-  /* 右侧栏宽度 */
   background-color: #ccc;
 }
 

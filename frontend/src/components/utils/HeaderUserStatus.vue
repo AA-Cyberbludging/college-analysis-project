@@ -131,7 +131,7 @@ export default defineComponent({
     <el-button @click="loginDialogVisible = true" v-if="!miscStore.login">登录</el-button>
     <div v-else>
       <span>欢迎您, {{ userStore.userName }}!</span>
-      <el-button type="text" @click="logout">退出</el-button>
+      <el-button type="text" @click="logout" style="font-size: 100%; margin-left: 20px;">退出</el-button>
     </div>
   </div>
 

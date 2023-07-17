@@ -16,21 +16,21 @@ export default defineComponent({
           if (!this.miscStore.login) {
             this.$message.info("请先登录")
           } else {
-            this.$router.push('/')
+            this.$router.push('/user-manage')
           }
           break
         case 3:
           if (!this.miscStore.login) {
             this.$message.info("请先登录")
           } else {
-            this.$router.push('/user-manage')
+            this.$router.push('/feedback-manage')
           }
           break
         case 4:
           if (!this.miscStore.login) {
             this.$message.info("请先登录")
           } else {
-            this.$router.push('/feedback-manage')
+            this.$router.push('/userInfo')
           }
           break
         default:
@@ -48,9 +48,9 @@ export default defineComponent({
 <template>
   <el-menu mode="horizontal" default-active="1" id="menu">
     <el-menu-item index="1" @click="handleMenu(1)">首页</el-menu-item>
-    <el-menu-item index="2" @click="handleMenu(2)">大学信息管理</el-menu-item>
-    <el-menu-item index="3" @click="handleMenu(3)">用户信息管理</el-menu-item>
-    <el-menu-item index="3" @click="handleMenu(4)">反馈管理</el-menu-item>
+    <el-menu-item index="2" @click="handleMenu(2)">用户管理</el-menu-item>
+    <el-menu-item index="3" @click="handleMenu(3)">反馈管理</el-menu-item>
+    <el-menu-item index="4" @click="handleMenu(4)">个人信息</el-menu-item>
   </el-menu>
 </template>
 

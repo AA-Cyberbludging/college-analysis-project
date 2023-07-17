@@ -15,8 +15,15 @@ export default defineComponent({
 
 <template>
   <div class="card-container">
-    <h3> {{ uname }} </h3>
-    <div class="popularity">🔥{{ upopularity }}</div>
+    <el-row>
+      <el-col :span="15">
+        <h3> {{ uname }} </h3>
+      </el-col>
+      <el-col :span="9">
+        <div class="popularity">🔥{{ upopularity === null ? 0 : upopularity }}</div>
+      </el-col>
+    </el-row>
+    
     <span>{{ utype }}</span> <span>{{ pname }}</span>
     <hr>
   </div>
@@ -34,7 +41,8 @@ h3 {
 }
 
 .popularity {
-  color: orange
+  color: rgb(186, 42, 23);
+  padding-top: 20px;
 }
 
 .card-container:hover {

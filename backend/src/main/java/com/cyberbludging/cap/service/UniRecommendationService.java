@@ -22,13 +22,8 @@ public class UniRecommendationService {
     }
     private recommendType recType;
     private double probability;
-    private List<MPSDTO> mpsdto = new ArrayList<MPSDTO>();
+    private List<MPSDTO> mpsdto = universityMapper.getAvg();
     private List<University> universities = new ArrayList<University>();
-
-
-    public UniRecommendationService(){
-        mpsdto = universityMapper.getAvg();
-    }
 
     private boolean inUpperRange(Integer score, Integer rank, MPSDTO mps){
         if((score > mps.getAveragePassingScore()-20 && score <= mps.getAveragePassingScore()-10) ||
@@ -137,11 +132,11 @@ public class UniRecommendationService {
                     user.getUserScore());
         }
         if(user.getUserRank()>=getAvgByUniversity(uni).getAveragePassingRank()){
-            rankProbability = singleProbability(user.getUserRank(),
+            rankProbability = 1-singleProbability(user.getUserRank(),
                     getAvgByUniversity(uni).getAveragePassingRank());
         }
         else {
-            rankProbability = 1-singleProbability(getAvgByUniversity(uni).getAveragePassingRank(),
+            rankProbability = singleProbability(getAvgByUniversity(uni).getAveragePassingRank(),
                     user.getUserRank());;
         }
         probability = Math.sqrt(0.25*scoreProbability*scoreProbability+0.75*rankProbability*rankProbability);

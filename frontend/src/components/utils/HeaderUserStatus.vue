@@ -63,7 +63,7 @@ export default defineComponent({
       this.registerDialogVisible = true;
     },
     async register() {
-      if (this.registerForm.name.trim() === "" || this.loginForm.password.trim() === "") {
+      if (this.registerForm.name.trim() === "" || this.registerForm.password.trim() === "") {
         this.$message.error("请输入用户名和密码")
         return
       }

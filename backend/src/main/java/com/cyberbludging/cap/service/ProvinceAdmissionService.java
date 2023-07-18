@@ -11,8 +11,6 @@ public class ProvinceAdmissionService {
     @Autowired
     private ProvinceAdmissionMapper provinceAdmissionMapper;
 
-
-
     public List<ProvinceAdmission> getalladmissionline()
     {
         List<ProvinceAdmission> dataof2020;

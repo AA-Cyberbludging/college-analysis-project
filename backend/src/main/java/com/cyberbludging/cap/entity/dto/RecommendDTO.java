@@ -13,10 +13,6 @@ public class RecommendDTO {
         probability=pro;
         recommendType=type;
     }
-    /*public void setUid(Integer id)  {uid = id;}
-    public void setUname(String name)   {uname = name;}
-    public void setProbability(String pro)  {probability=pro;}
-    public void setRecommendType(String type)   {recommendType=type;}*/
 
     public Integer getUid() {
         return uid;

@@ -108,14 +108,14 @@ export default defineComponent({
 
 <template>
   <h2 style="text-align: center;">用户管理</h2>
-  <el-table :data="userList" style="width: auto; padding-left: 50px; padding-right: 50px;" :max-height="800" stripe>
-    <el-table-column prop="userId" label="ID" />
+  <el-table :data="userList" style="padding-left: 50px; padding-right: 50px;" :max-height="800" :border="true" table-layout="auto" stripe>
+    <el-table-column prop="userId" label="ID" width="100"/>
     <el-table-column prop="userName" label="用户名" />
     <el-table-column prop="pname" label="省份" />
-    <el-table-column prop="subject" label="文理" />
+    <el-table-column prop="subject" label="文理"/>
     <el-table-column prop="userScore" label="分数" />
-    <el-table-column prop="userRank" label="位次" />
-    <el-table-column label="操作">
+    <el-table-column prop="userRank" label="位次"/>
+    <el-table-column label="操作" width="300">
       <template #default="scope">
         <el-button type="primary" @click="showModifyDialog(scope.$index)">修改信息</el-button>
         <el-button type="danger" @click="showDeleteDialog(scope.$index)">删除</el-button>

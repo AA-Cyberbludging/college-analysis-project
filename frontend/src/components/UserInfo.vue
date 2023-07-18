@@ -115,11 +115,17 @@ export default defineComponent({
       this.newPasswordForm.oldPassword = this.newPasswordForm.newPassword = ""
     },
     async submitFeedback() {
+      if (this.feedback.trim() === "") {
+        this.$message.error("请输入反馈")
+        return
+      }
+      const time = nowTimestamp()
+      console.log(time)
       try {
         const data = await axios.post('/api/feedback/add', {
           userId: this.userStore.userId,
           feedback: this.feedback,
-          time: nowTimestamp()
+          timestamp: time
         }, {
           headers: { Authorization: window.localStorage.getItem('cap-access') }
         })

@@ -10,8 +10,8 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ProvinceAdmissionMapper {
-        @Select("SELECT *" +
-                "FEOM province_admission " +
+        @Select("SELECT * " +
+                "FROM province_admission " +
                 "WHERE year = #{year} "
         )
         List<ProvinceAdmission> getadmissionLine(Integer year);

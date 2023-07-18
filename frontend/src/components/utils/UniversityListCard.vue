@@ -33,10 +33,10 @@ export default defineComponent({
 .card-container {
   transition: all 0.1s ease-in;
   padding-left: 20px;
-  padding-top: 5px;
 }
 
 h3 {
+  padding-top: 0;
   width: 150px;
   font-size: 120%;
 }

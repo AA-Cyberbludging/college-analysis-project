@@ -28,8 +28,7 @@ public class DisplayController {
 
     @Autowired
     private AnalyseInfoService analyseInfoService;
-    private AuthenticationService authenticationService;
-    private UniCompareService uniCompareService;
+
     @Autowired
     private UniRecommendationService uniRecommendationService;
 
@@ -58,10 +57,6 @@ public class DisplayController {
         return displayInfoService.searchById(id);
     }
 
-
-
-
-
     @GetMapping("/university/popularity")
     @ApiOperation("获取大学热度排名")
     public List<UpopularityDTO> rankByPopularity(){
@@ -86,11 +81,4 @@ public class DisplayController {
     public List<RecommendDTO> recommend(@RequestBody User user){
         return uniRecommendationService.recommend(user);
     }
-
-    @PostMapping("/uniCompare")
-    @ApiOperation("大学对比")
-    public List<University> getRate(@RequestBody String uname1, String uname2){
-        return  uniCompareService.getRate(uname1, uname2);
-    }
-
 }

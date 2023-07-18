@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.text.NumberFormat;
 
-//@Service
+@Service
 public class UniRecommendationService {
 
-    //@Autowired
+    @Autowired
     private UniversityMapper universityMapper;
 
     enum recommendType{
@@ -22,7 +22,7 @@ public class UniRecommendationService {
     }
     private recommendType recType;
     private double probability;
-    private List<MPSDTO> mpsdto = universityMapper.getAvg();
+    private List<MPSDTO> mpsdto = new ArrayList<MPSDTO>();
     private List<University> universities = new ArrayList<University>();
 
     private boolean inUpperRange(Integer score, Integer rank, MPSDTO mps){
@@ -59,6 +59,7 @@ public class UniRecommendationService {
     public List<University> recommendUpper(User user){
 
         List<University> uni = new ArrayList<University>();
+        mpsdto = universityMapper.getAvg();
         List<MPSDTO> mps = mpsdto;
         this.recType = recommendType.upper;
         for(int i=0;i< mps.size();i++){
@@ -75,6 +76,7 @@ public class UniRecommendationService {
     public List<University> recommendMiddle(User user) {
 
         List<University> uni = new ArrayList<University>();
+        mpsdto = universityMapper.getAvg();
         List<MPSDTO> mps = mpsdto;
         this.recType = recommendType.middle;
         for(int i=0;i< mps.size();i++){
@@ -90,6 +92,7 @@ public class UniRecommendationService {
     public List<University> recommendLower(User user){
 
         List<University> uni = new ArrayList<University>();
+        mpsdto = universityMapper.getAvg();
         List<MPSDTO> mps = mpsdto;
         this.recType = recommendType.lower;
         for(int i=0;i< mps.size();i++){
@@ -103,6 +106,7 @@ public class UniRecommendationService {
 
     public MPSDTO getAvgByUniversity(University uni){
         MPSDTO mps = new MPSDTO();
+        mpsdto = universityMapper.getAvg();
         for (int i=0;i< mpsdto.size();i++){
             if(uni.getUid().equals(mpsdto.get(i).getUid())){
                 mps = mpsdto.get(i);

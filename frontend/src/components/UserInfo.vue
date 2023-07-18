@@ -253,7 +253,7 @@ export default defineComponent({
   min-width: 300px;
   max-width: 1200px;
   border-radius: 16px;
-  box-shadow: 2px 3px 10px gray;
+  box-shadow: 2px 3px 10px rgb(128, 128, 128, 0.5);
   padding: 50px;
 }
 </style>

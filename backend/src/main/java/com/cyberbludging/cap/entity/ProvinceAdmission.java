@@ -3,7 +3,7 @@ package com.cyberbludging.cap.entity;
 public class ProvinceAdmission {
     private String pname;
     private Integer year;
-    private Integer admission_line;
+    private Integer admissionLine;
     private String subject;
 
     public String getPname() {
@@ -22,12 +22,12 @@ public class ProvinceAdmission {
         this.year = year;
     }
 
-    public Integer getAdmission_line() {
-        return admission_line;
+    public Integer getAdmissionLine() {
+        return admissionLine;
     }
 
-    public void setAdmission_line(Integer admission_line) {
-        this.admission_line = admission_line;
+    public void setAdmissionLine(Integer admissionLine) {
+        this.admissionLine = admissionLine;
     }
 
     public String getSubject() {
@@ -36,15 +36,5 @@ public class ProvinceAdmission {
 
     public void setSubject(String subject) {
         this.subject = subject;
-    }
-
-    @Override
-    public String toString() {
-        return "province_admission{" +
-                "pname='" + pname + '\'' +
-                ", year=" + year +
-                ", admission_line=" + admission_line +
-                ", subject='" + subject + '\'' +
-                '}';
     }
 }

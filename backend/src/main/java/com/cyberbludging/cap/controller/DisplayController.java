@@ -32,10 +32,10 @@ public class DisplayController {
 
     //private UniRecommendationService uniRecommendationService;
 
-    @PostMapping("/{ProvinceAdmission}")
+    @GetMapping("/tendency")
     @ApiOperation("展示各省份录取趋势")
     public List<ProvinceAdmission> getAdmissionLine(){
-        return provinceAdmissionService.getalladmissionline();
+        return provinceAdmissionService.getAllAdmissionLine();
     }
 
     @PostMapping("/{MinimumPassingScore}")

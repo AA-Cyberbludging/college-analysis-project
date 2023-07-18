@@ -14,17 +14,5 @@ public interface ProvinceAdmissionMapper {
                 "FROM province_admission " +
                 "WHERE year = #{year} "
         )
-        List<ProvinceAdmission> getadmissionLine(Integer year);
-
-//        @Select("SELECT admission_line "+
-//                "FROM province_admission "+
-//                "WHERE pname = #{pname}"
-//        )
-//        Integer getadmissionlinnbypname(String pname);
-//
-//        @Select("SELECT addmission_line " +
-//                "FROM province_admission " +
-//                "natural join province ")
-//        List<Integer> getadmisssionlinnofallprovince();
-//
+        List<ProvinceAdmission> getAdmissionLine(Integer year);
 }

@@ -51,9 +51,10 @@ public interface UniversityMapper {
         University getUniversityRateByName(String name);
 
         //获取近三年大学平均最低录取分及录取名次
-        @Select("SELECT uid, AVG(umps) AS averagePassingScore, AVG(rank) AS averagePassingRank FROM mps " +
-                "GROUP BY uid")
-        List<MPSDTO> getAvg();
+        @Select("SELECT uid, AVG(umps) AS averagePassingScore, AVG(`rank`) AS averagePassingRank FROM " +
+                "(SELECT * FROM mps WHERE subject = #{sub} AND pname = #{pname}) AS aa" +
+                "GROUP BY uid" )
+        List<MPSDTO> getAvg(String sub, String pname);
 
         //按热度排序所有大学
         @Select("select uid, uname, upopularity from university " +

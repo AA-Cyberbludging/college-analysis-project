@@ -2,6 +2,7 @@ package com.cyberbludging.cap.service;
 
 import com.cyberbludging.cap.entity.*;
 import com.cyberbludging.cap.entity.dto.MPSDTO;
+import com.cyberbludging.cap.entity.dto.RecommendDTO;
 import com.cyberbludging.cap.mapper.UniversityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,12 @@ public class UniRecommendationService {
     @Autowired
     private UniversityMapper universityMapper;
 
-    enum recommendType{
-        upper,middle,lower
-    }
-    private recommendType recType;
     private double probability;
     private List<MPSDTO> mpsdto = new ArrayList<MPSDTO>();
     private List<University> universities = new ArrayList<University>();
+    private List<RecommendDTO> recommendDTOS = new ArrayList<RecommendDTO>();
 
+    /*
     private boolean inUpperRange(Integer score, Integer rank, MPSDTO mps){
         if((score > mps.getAveragePassingScore()-20 && score <= mps.getAveragePassingScore()-10) ||
                 (rank > mps.getAveragePassingRank()+1000 && rank <= mps.getAveragePassingRank()+2000)){
@@ -46,6 +45,7 @@ public class UniRecommendationService {
         }
         return false;
     }
+     */
     private double singleProbability(Integer temp, Integer avg){
         double result = (double)avg/temp;
         double t =result;
@@ -55,6 +55,7 @@ public class UniRecommendationService {
         return 1-0.5*result;
     }
 
+    /*
     //冲
     public List<University> recommendUpper(User user){
 
@@ -103,21 +104,17 @@ public class UniRecommendationService {
         universities = uni;
         return this.universities;
     }
+     */
 
-    public MPSDTO getAvgByUniversity(University uni){
+    public MPSDTO getAvgByUniversity(User user,University uni){
         MPSDTO mps = new MPSDTO();
-        mpsdto = universityMapper.getAvg();
+        mpsdto = universityMapper.getAvg(user.getSubject(),user.getPname());
         for (int i=0;i< mpsdto.size();i++){
             if(uni.getUid().equals(mpsdto.get(i).getUid())){
                 mps = mpsdto.get(i);
             }
         }
         return mps;
-    }
-
-    public String getRecommendType(){
-
-        return this.recType.toString();
     }
 
     /*按照score与rank分别占比25%和75%
@@ -127,24 +124,52 @@ public class UniRecommendationService {
     public double getProbability(User user, University uni){
 
         double scoreProbability, rankProbability;
-        if(user.getUserScore()>=getAvgByUniversity(uni).getAveragePassingScore()){
+        if(user.getUserScore()>=getAvgByUniversity(user,uni).getAveragePassingScore()){
             scoreProbability = singleProbability(user.getUserScore(),
-                    getAvgByUniversity(uni).getAveragePassingScore());
+                    getAvgByUniversity(user,uni).getAveragePassingScore());
         }
         else {
-            scoreProbability = 1-singleProbability(getAvgByUniversity(uni).getAveragePassingScore(),
+            scoreProbability = 1-singleProbability(getAvgByUniversity(user,uni).getAveragePassingScore(),
                     user.getUserScore());
         }
-        if(user.getUserRank()>=getAvgByUniversity(uni).getAveragePassingRank()){
+        if(user.getUserRank()>=getAvgByUniversity(user,uni).getAveragePassingRank()){
             rankProbability = 1-singleProbability(user.getUserRank(),
-                    getAvgByUniversity(uni).getAveragePassingRank());
+                    getAvgByUniversity(user,uni).getAveragePassingRank());
         }
         else {
-            rankProbability = singleProbability(getAvgByUniversity(uni).getAveragePassingRank(),
+            rankProbability = singleProbability(getAvgByUniversity(user,uni).getAveragePassingRank(),
                     user.getUserRank());;
         }
         probability = Math.sqrt(0.25*scoreProbability*scoreProbability+0.75*rankProbability*rankProbability);
         return this.probability;
+    }
+    public List<RecommendDTO> recommend(User user){
+        mpsdto = universityMapper.getAvg(user.getSubject(),user.getPname());
+        RecommendDTO recommend = new RecommendDTO();
+        double pro;
+        for(int i=0;i<mpsdto.size();i++){
+            pro=getProbability(user,universityMapper.getUniversityByID(mpsdto.get(i).getUid()));
+            if(pro>=0.2 && pro<0.4){
+                recommend.set(mpsdto.get(i).getUid(),
+                        universityMapper.getUniversityByID(mpsdto.get(i).getUid()).getUname(),
+                        getPercentProbability(pro), "冲");
+                recommendDTOS.add(recommend);
+            }
+            else if(pro>=0.4 && pro <0.7){
+                recommend.set(mpsdto.get(i).getUid(),
+                        universityMapper.getUniversityByID(mpsdto.get(i).getUid()).getUname(),
+                        getPercentProbability(pro),"稳");
+                recommendDTOS.add(recommend);
+            }
+            else if(pro>=0.7){
+                recommend.set(mpsdto.get(i).getUid(),
+                        universityMapper.getUniversityByID(mpsdto.get(i).getUid()).getUname(),
+                        getPercentProbability(pro),"保");
+                recommendDTOS.add(recommend);
+            }
+
+        }
+        return recommendDTOS;
     }
 
     /*

@@ -2,7 +2,6 @@ package com.cyberbludging.cap.service;
 
 import com.cyberbludging.cap.entity.EnrollmentPlan;
 import com.cyberbludging.cap.entity.MinimumPassingScore;
-import com.cyberbludging.cap.entity.University;
 import com.cyberbludging.cap.mapper.UniversityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +29,8 @@ public class AnalyseInfoService {
     /*返回某大学的招生计划
     *返回EnrollmentPlan列表
      */
-    public List<EnrollmentPlan> getEnrollmentPlan(String uname){
-        enrollmentPlans = universityMapper.getEnrollmentPlanByuName(uname);
+    public List<EnrollmentPlan> getEnrollmentPlan(Integer id){
+        enrollmentPlans = universityMapper.getEnrollmentPlanById(id);
         return enrollmentPlans;
     }
 

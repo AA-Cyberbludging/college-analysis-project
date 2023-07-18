@@ -1,9 +1,7 @@
 package com.cyberbludging.cap.controller;
 
 
-import com.cyberbludging.cap.entity.MinimumPassingScore;
-import com.cyberbludging.cap.entity.Province;
-import com.cyberbludging.cap.entity.University;
+import com.cyberbludging.cap.entity.*;
 import com.cyberbludging.cap.entity.dto.UniversityDTO;
 import com.cyberbludging.cap.entity.dto.UpopularityDTO;
 import com.cyberbludging.cap.service.*;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import  com.cyberbludging.cap.entity.ProvinceAdmission;
 
 @Api(tags = "展示接口")
 @RestController
@@ -28,6 +25,7 @@ public class DisplayController {
     @Autowired
     private ProvinceAdmissionService provinceAdmissionService;
 
+    @Autowired
     private AnalyseInfoService analyseInfoService;
     private AuthenticationService authenticationService;
     private UniCompareService uniCompareService;
@@ -80,6 +78,12 @@ public class DisplayController {
     @ApiOperation("获取大学省份数量排名")
     public List<Province> rankByProvince(){
         return displayInfoService.rankByProvince();
+    }
+
+    @GetMapping("/university/{id}/admission")
+    @ApiOperation("获取指定学校招生计划")
+    public List<EnrollmentPlan> getUniversityAdmission(@PathVariable Integer id) {
+        return analyseInfoService.getEnrollmentPlan(id);
     }
 
 /*

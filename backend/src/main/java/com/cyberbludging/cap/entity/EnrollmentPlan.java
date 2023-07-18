@@ -55,16 +55,4 @@ public class EnrollmentPlan {
     public void setEnrollmentNum(Integer enrollmentNum) {
         this.enrollmentNum = enrollmentNum;
     }
-
-    @Override
-    public String toString() {
-        return "enrollment_plan{" +
-                "uid=" + uid +
-                ", pname='" + pname + '\'' +
-                ", subject='" + subject + '\'' +
-                ", major='" + major + '\'' +
-                ", year=" + year +
-                ", enrollmentNum=" + enrollmentNum +
-                '}';
-    }
 }

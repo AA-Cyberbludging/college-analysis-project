@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.text.NumberFormat;
 
-//@Service
+@Service
 public class UniRecommendationService {
 
-    //@Autowired
+    @Autowired
     private UniversityMapper universityMapper;
 
     enum recommendType{
@@ -24,11 +24,6 @@ public class UniRecommendationService {
     private double probability;
     private List<MPSDTO> mpsdto = new ArrayList<MPSDTO>();
     private List<University> universities = new ArrayList<University>();
-
-
-    public UniRecommendationService(){
-        mpsdto = universityMapper.getAvg();
-    }
 
     private boolean inUpperRange(Integer score, Integer rank, MPSDTO mps){
         if((score > mps.getAveragePassingScore()-20 && score <= mps.getAveragePassingScore()-10) ||
@@ -64,6 +59,7 @@ public class UniRecommendationService {
     public List<University> recommendUpper(User user){
 
         List<University> uni = new ArrayList<University>();
+        mpsdto = universityMapper.getAvg();
         List<MPSDTO> mps = mpsdto;
         this.recType = recommendType.upper;
         for(int i=0;i< mps.size();i++){
@@ -80,6 +76,7 @@ public class UniRecommendationService {
     public List<University> recommendMiddle(User user) {
 
         List<University> uni = new ArrayList<University>();
+        mpsdto = universityMapper.getAvg();
         List<MPSDTO> mps = mpsdto;
         this.recType = recommendType.middle;
         for(int i=0;i< mps.size();i++){
@@ -95,6 +92,7 @@ public class UniRecommendationService {
     public List<University> recommendLower(User user){
 
         List<University> uni = new ArrayList<University>();
+        mpsdto = universityMapper.getAvg();
         List<MPSDTO> mps = mpsdto;
         this.recType = recommendType.lower;
         for(int i=0;i< mps.size();i++){
@@ -108,6 +106,7 @@ public class UniRecommendationService {
 
     public MPSDTO getAvgByUniversity(University uni){
         MPSDTO mps = new MPSDTO();
+        mpsdto = universityMapper.getAvg();
         for (int i=0;i< mpsdto.size();i++){
             if(uni.getUid().equals(mpsdto.get(i).getUid())){
                 mps = mpsdto.get(i);
@@ -137,11 +136,11 @@ public class UniRecommendationService {
                     user.getUserScore());
         }
         if(user.getUserRank()>=getAvgByUniversity(uni).getAveragePassingRank()){
-            rankProbability = singleProbability(user.getUserRank(),
+            rankProbability = 1-singleProbability(user.getUserRank(),
                     getAvgByUniversity(uni).getAveragePassingRank());
         }
         else {
-            rankProbability = 1-singleProbability(getAvgByUniversity(uni).getAveragePassingRank(),
+            rankProbability = singleProbability(getAvgByUniversity(uni).getAveragePassingRank(),
                     user.getUserRank());;
         }
         probability = Math.sqrt(0.25*scoreProbability*scoreProbability+0.75*rankProbability*rankProbability);

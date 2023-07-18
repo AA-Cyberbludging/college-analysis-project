@@ -23,29 +23,7 @@ public class UniRecommendationService {
     private List<University> universities = new ArrayList<University>();
     private List<RecommendDTO> recommendDTOS = new ArrayList<RecommendDTO>();
 
-    /*
-    private boolean inUpperRange(Integer score, Integer rank, MPSDTO mps){
-        if((score > mps.getAveragePassingScore()-20 && score <= mps.getAveragePassingScore()-10) ||
-                (rank > mps.getAveragePassingRank()+1000 && rank <= mps.getAveragePassingRank()+2000)){
-            return true;
-        }
-        return false;
-    }
-    private boolean inMiddleRange(Integer score, Integer rank, MPSDTO mps){
-        if((score > mps.getAveragePassingScore()-10 && score <= mps.getAveragePassingScore()+10) ||
-                (rank > mps.getAveragePassingRank()-1000 && rank <= mps.getAveragePassingRank()+1000)){
-            return true;
-        }
-        return false;
-    }
-    private boolean inLowerRange(Integer score, Integer rank, MPSDTO mps){
-        if((score > mps.getAveragePassingScore()+10 && score <= mps.getAveragePassingScore()+20) ||
-                (rank > mps.getAveragePassingRank()-2000 && rank <= mps.getAveragePassingRank()-1000)){
-            return true;
-        }
-        return false;
-    }
-     */
+
     private double singleProbability(Integer temp, Integer avg){
         double result = (double)avg/temp;
         double t =result;
@@ -54,57 +32,6 @@ public class UniRecommendationService {
         }
         return 1-0.5*result;
     }
-
-    /*
-    //冲
-    public List<University> recommendUpper(User user){
-
-        List<University> uni = new ArrayList<University>();
-        mpsdto = universityMapper.getAvg();
-        List<MPSDTO> mps = mpsdto;
-        this.recType = recommendType.upper;
-        for(int i=0;i< mps.size();i++){
-            if(inUpperRange(user.getUserScore(),user.getUserRank(), mps.get(i))){
-                uni.add(universityMapper.getUniversityByID(mps.get(i).getUid()));
-            }
-        }
-        universities = uni;
-        return this.universities;
-
-    }
-
-    //稳
-    public List<University> recommendMiddle(User user) {
-
-        List<University> uni = new ArrayList<University>();
-        mpsdto = universityMapper.getAvg();
-        List<MPSDTO> mps = mpsdto;
-        this.recType = recommendType.middle;
-        for(int i=0;i< mps.size();i++){
-            if(inMiddleRange(user.getUserScore(),user.getUserRank(), mps.get(i))){
-                uni.add(universityMapper.getUniversityByID(mps.get(i).getUid()));
-            }
-        }
-        universities = uni;
-        return this.universities;
-    }
-
-    //保
-    public List<University> recommendLower(User user){
-
-        List<University> uni = new ArrayList<University>();
-        mpsdto = universityMapper.getAvg();
-        List<MPSDTO> mps = mpsdto;
-        this.recType = recommendType.lower;
-        for(int i=0;i< mps.size();i++){
-            if(inLowerRange(user.getUserScore(),user.getUserRank(), mps.get(i))){
-                uni.add(universityMapper.getUniversityByID(mps.get(i).getUid()));
-            }
-        }
-        universities = uni;
-        return this.universities;
-    }
-     */
 
     public MPSDTO getAvgByUniversity(User user,University uni){
         MPSDTO mps = new MPSDTO();
@@ -122,7 +49,6 @@ public class UniRecommendationService {
     * 相应地，考生成绩较低则录取概率低于0.5，较高高于0.5
      */
     public double getProbability(User user, University uni){
-
         double scoreProbability, rankProbability;
         if(user.getUserScore()>=getAvgByUniversity(user,uni).getAveragePassingScore()){
             scoreProbability = singleProbability(user.getUserScore(),
@@ -143,12 +69,16 @@ public class UniRecommendationService {
         probability = Math.sqrt(0.25*scoreProbability*scoreProbability+0.75*rankProbability*rankProbability);
         return this.probability;
     }
+
+    /*根据考生成绩、文理科推荐院校
+     *目前录取概率0.2~0.4为冲，0.4~0.7为稳，0.7以上为保
+     */
     public List<RecommendDTO> recommend(User user){
         mpsdto = universityMapper.getAvg(user.getSubject(),user.getPname());
-        RecommendDTO recommend = new RecommendDTO();
-        double pro;
         for(int i=0;i<mpsdto.size();i++){
-            pro=getProbability(user,universityMapper.getUniversityByID(mpsdto.get(i).getUid()));
+            RecommendDTO recommend = new RecommendDTO();
+            double pro=getProbability(user,universityMapper.getUniversityByID(mpsdto.get(i).getUid()));
+
             if(pro>=0.2 && pro<0.4){
                 recommend.set(mpsdto.get(i).getUid(),
                         universityMapper.getUniversityByID(mpsdto.get(i).getUid()).getUname(),
@@ -167,7 +97,6 @@ public class UniRecommendationService {
                         getPercentProbability(pro),"保");
                 recommendDTOS.add(recommend);
             }
-
         }
         return recommendDTOS;
     }

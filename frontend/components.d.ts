@@ -40,6 +40,7 @@ declare module '@vue/runtime-core' {
     Index: typeof import('./src/components/Index.vue')['default']
     PieEchart: typeof import('./src/components/charts/PieEchart.vue')['default']
     Recommendation: typeof import('./src/components/user/Recommendation.vue')['default']
+    RecommendationCard: typeof import('./src/components/utils/RecommendationCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StudentMenu: typeof import('./src/components/utils/menu/StudentMenu.vue')['default']

@@ -269,10 +269,7 @@ export default defineComponent({
         <div v-if="selectedUid !== 0">
           <el-row style="background-color: rgb(247, 247, 247);">
             <el-col>
-              <el-image src="../../src/assets/landscape/1.jpg" fit="scale-down" style="max-height: 100px;">
-
-              </el-image>
-              <!-- <img src="@/assets/landscape/1.jpg" style="height: 100px; object-fit: fill;" /> -->
+              <el-image src="../../src/assets/landscape/1.jpg" fit="scale-down" style="max-height: 150px;" />
             </el-col>
           </el-row>
           <el-row>
@@ -286,17 +283,17 @@ export default defineComponent({
               </el-image>
             </el-col>
             <el-col :span="12">
-              <p style="font-size: 250%; padding-left: 20px; padding-top: 20px;">{{ universityList[selectedUid - 1].uname
+              <p style="font-size: 250%; padding-left: 20px;">{{ universityList[selectedUid - 1].uname
               }}</p>
             </el-col>
             <el-col :span="3">
-              <div style="margin-top: 76px;">
+              <div style="margin-top: 60px;">
                 <span class="tag">{{ universityList[selectedUid - 1].utype }}</span>
                 <span class="tag">{{ universityList[selectedUid - 1].pname }}</span>
               </div>
             </el-col>
             <el-col :span="3">
-              <el-button type="primary" style="margin-top: 71px;" @click="enrollmentDialogVisible = true">招生计划</el-button>
+              <el-button type="primary" style="margin-top: 55.5px;" @click="enrollmentDialogVisible = true">招生计划</el-button>
             </el-col>
           </el-row>
           <div v-if="universityDetail.sexRatio !== null">
@@ -371,7 +368,7 @@ li {
 
 .badge {
   margin-left: 40px;
-  margin-top: -60px;
+  margin-top: -100px;
   border-radius: 16px;
   box-shadow: 1px 3px 3px gray;
   height: 200px;

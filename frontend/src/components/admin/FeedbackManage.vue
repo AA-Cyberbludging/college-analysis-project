@@ -71,7 +71,7 @@ export default defineComponent({
           this.$message.error(data.data.message)
         }
       } catch (error: any) {
-        this.$message.error("反馈状态修改失败")
+        this.$message.error("反馈状态修改失败: " + error)
       }
     }
   },

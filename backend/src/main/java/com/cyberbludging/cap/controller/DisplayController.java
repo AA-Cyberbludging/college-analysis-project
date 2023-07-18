@@ -11,37 +11,32 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "展示接口")
 @RestController
 @RequestMapping("/display")
 @CrossOrigin
-
 public class DisplayController {
     @Autowired
     private DisplayInfoService displayInfoService;
 
     @Autowired
-    private ProvinceAdmissionService provinceAdmissionService;
-
-    @Autowired
-    private AnalyseInfoService analyseInfoService;
+    private AnalysisInfoService analyseInfoService;
 
     @Autowired
     private UniRecommendationService uniRecommendationService;
 
     @GetMapping("/tendency")
-    @ApiOperation("展示各省份录取趋势")
+    @ApiOperation("获取各省份录取趋势")
     public List<ProvinceAdmission> getAdmissionLine(){
-        return provinceAdmissionService.getAllAdmissionLine();
+        return displayInfoService.getAllAdmissionLine();
     }
 
-    @PostMapping("/{MinimumPassingScore}")
-    @ApiOperation("展示最低录取分数线")
-    public List<MinimumPassingScore> getMPSByuName(@PathVariable String uname ){
-        return analyseInfoService.getMPSByuName(uname);
+    @GetMapping("/university/{id}/mps")
+    @ApiOperation("获取大学各专业最低录取分数线和位次")
+    public List<MinimumPassingScore> getMPSById(@PathVariable Integer id){
+        return analyseInfoService.getMPSById(id);
     }
 
 

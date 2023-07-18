@@ -8,6 +8,8 @@ public class MinimumPassingScore {
     private Integer umps;
     private Integer rank;
 
+    private String pname;
+
     public Integer getUid() {
         return uid;
     }
@@ -56,15 +58,11 @@ public class MinimumPassingScore {
         this.umps = umps;
     }
 
-    @Override
-    public String toString() {
-        return "mps{" +
-                "uid=" + uid +
-                ", year=" + year +
-                ", major='" + major + '\'' +
-                ", subject='" + subject + '\'' +
-                ", umps=" + umps +
-                ", rank=" + rank +
-                '}';
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
     }
 }

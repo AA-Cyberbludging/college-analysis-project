@@ -30,10 +30,11 @@ public interface UniversityMapper {
                 "where university.uid = #{id}")
         List<EnrollmentPlan> getEnrollmentPlanById(Integer id);
         //获取某大学各专业录取分数线及位次
-        @Select("SELECT * FROM mps " +
-                "natural join university " +
-                " WHERE uname = #{name}")
-        List<MinimumPassingScore> getMPSByuName(String name);
+        @Select("SELECT mps.pname, `year`, subject, major, umps, `rank` " +
+                "FROM mps join university " +
+                "on mps.uid = university.uid " +
+                "where mps.uid = #{id}")
+        List<MinimumPassingScore> getMPSById(Integer id);
 
         //获取近三年大学平均最低录取分及录取名次
         @Select("SELECT uid, AVG(umps) AS averagePassingScore, AVG(`rank`) AS averagePassingRank FROM " +

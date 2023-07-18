@@ -43,7 +43,7 @@ useResize(echartInstance);
 
 const initChart = () => {
     echartInstance.value = echarts.init(echartRef.value!, "light", {
-        renderer: "canvas",
+        renderer: "svg",
     });
     echartInstance.value.setOption(props.option);
 };

@@ -3,7 +3,7 @@ package com.cyberbludging.cap.controller;
 
 import com.cyberbludging.cap.entity.User;
 import com.cyberbludging.cap.entity.dto.PasswordDTO;
-import com.cyberbludging.cap.service.AnalyseInfoService;
+import com.cyberbludging.cap.service.AnalysisInfoService;
 import com.cyberbludging.cap.service.UserService;
 import com.cyberbludging.cap.util.Result;
 import io.swagger.annotations.Api;
@@ -19,7 +19,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    private AnalyseInfoService analyseInfoService;
+    private AnalysisInfoService analyseInfoService;
 
     @GetMapping("/{id}")
     @ApiOperation("获取用户信息")

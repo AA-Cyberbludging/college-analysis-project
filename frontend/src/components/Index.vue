@@ -225,23 +225,23 @@ export default defineComponent({
 <template>
   <div class="container">
     <div class="column left">
-      <div class="chart-grid">
+      <div class="chart-grid animated">
         <base-echart :option="getProvinceListOption()" width="130" style="padding-top: 20px;" />
       </div>
-      <div class="chart-grid">
+      <div class="chart-grid animated">
         <base-echart :option="getAdmissionListOption('文科')" width="130" style="padding-top: 20px;" />
       </div>
     </div>
     <div class="column middle">
-      <div class="chart-grid">
-        <base-echart :option="getMapChartOption()" v-if="mapLoaded" style="padding-top: 200px;" />
+      <div class="chart-grid animated" v-if="mapLoaded">
+        <base-echart :option="getMapChartOption()" style="" />
       </div>
     </div>
     <div class="column right">
-      <div class="chart-grid">
+      <div class="chart-grid animated">
         <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
       </div>
-      <div class="chart-grid">
+      <div class="chart-grid animated">
         <base-echart :option="getAdmissionListOption('理科')" width="130" style="padding-top: 20px;" />
       </div>
     </div>
@@ -251,7 +251,6 @@ export default defineComponent({
 <style scoped>
 .container {
   display: flex;
-  flex-direction: row;
   height: 91vh;
 }
 
@@ -261,21 +260,38 @@ export default defineComponent({
 
 .left {
   width: 27%;
-  background-color: #ccc;
+  /* background-color: #ccc; */
 }
 
 .middle {
   width: 46%;
-  background-color: #ddd;
+  /* background-color: #ddd; */
 }
 
 .right {
   width: 27%;
-  background-color: #ccc;
+  /* background-color: #ccc; */
 }
 
 .chart-grid {
-  background-color: burlywood;
+  background-color: rgb(248, 248, 248);
   margin: 10px;
+  box-shadow: 2px 3px 10px rgb(128, 128, 128, 0.5);
+  border-radius: 16px;
+}
+
+.animated {
+  animation: slide-up 1s ease-out;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 </style>

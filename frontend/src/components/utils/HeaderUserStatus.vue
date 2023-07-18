@@ -44,8 +44,7 @@ export default defineComponent({
           this.$message.success("登录成功")
           window.localStorage.setItem('cap-access', loginResult.data.data.token)
           this.userStore.userId = loginResult.data.data.id
-          this.userStore.userName = this.loginForm.name
-          this.userStore.isStudent = this.loginForm.isStudent
+          await this.getUserInfo()
           this.loginDialogVisible = false
           this.miscStore.login = true
           this.loginForm.name = ""
@@ -56,6 +55,17 @@ export default defineComponent({
         }
       } catch (error: any) {
         this.$message.error("请求失败: " + error.toString())
+      }
+    },
+    async getUserInfo() {
+      try {
+        const data = await axios.get(`/api/user/${this.userStore.userId}`, {
+          headers: { Authorization: window.localStorage.getItem('cap-access') }
+        })
+        this.userStore.$state = data.data
+        console.log(this.userStore.$state)
+      } catch (error: any) {
+        this.$message.error("用户信息请求失败: " + error.toString())
       }
     },
     openRegisterDialog() {

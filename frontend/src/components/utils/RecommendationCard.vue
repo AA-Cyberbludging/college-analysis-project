@@ -55,8 +55,16 @@ export default defineComponent({
           <span class="rate">{{ rate }}</span>
         </div>
       </el-col>
-      <el-col :span="18">
+      <el-col :span="12">
         <div style="padding-top: 12px;">{{ uname }}</div>
+      </el-col>
+      <el-col :span="6">
+        <div>
+          <div style="font-size: 5px; padding-top: 5px;">2022 年</div>
+          <span class="rank">{{ rate }}</span>
+          <br />
+          <span class="rank">{{ rate }}</span>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -79,6 +87,13 @@ h3 {
   font-family: '华文仿宋';
   font-weight: bold;
   font-size: 20px;
+}
+
+.rank {
+  font-family: '华文仿宋';
+  font-weight: bold;
+  font-size: 10px;
+  margin: 0;
 }
 
 .card-container:hover {

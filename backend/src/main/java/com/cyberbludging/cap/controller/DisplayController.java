@@ -2,6 +2,7 @@ package com.cyberbludging.cap.controller;
 
 
 import com.cyberbludging.cap.entity.*;
+import com.cyberbludging.cap.entity.dto.RecommendDTO;
 import com.cyberbludging.cap.entity.dto.UniversityDTO;
 import com.cyberbludging.cap.entity.dto.UpopularityDTO;
 import com.cyberbludging.cap.service.*;
@@ -29,8 +30,8 @@ public class DisplayController {
     private AnalyseInfoService analyseInfoService;
     private AuthenticationService authenticationService;
     private UniCompareService uniCompareService;
-
-    //private UniRecommendationService uniRecommendationService;
+    @Autowired
+    private UniRecommendationService uniRecommendationService;
 
     @PostMapping("/{ProvinceAdmission}")
     @ApiOperation("展示各省份录取趋势")
@@ -58,13 +59,7 @@ public class DisplayController {
     }
 
 
-    /*
-    @GetMapping("/{SearchByProvince}")
-    @ApiOperation("按地区和类别查找大学")
-    public List<UniversityDTO> getUniversityBypNameAndType(@PathVariable String pname, String type){
-        return displayInfoService.rankByPopularity();
-    }
-    */
+
 
 
     @GetMapping("/university/popularity")
@@ -86,52 +81,16 @@ public class DisplayController {
         return analyseInfoService.getEnrollmentPlan(id);
     }
 
-/*
-    @GetMapping("/{UniCompare}")
-    @ApiOperation("展示两所学校的对比")
-    public List<University> UniCompareService(@PathVariable String uname1, String uname2){
-        return uniCompareService.getRate(uname1,uname2);
-    }
-*/
-
-
-/*
-    @GetMapping("/{enrollmentDistribution}")
-    @ApiOperation("展示招生分布")
-    public showEnrollment(){
-        return analyseInfoService.showEnrollment();
-    }
-*/
-
-    /*
-    @GetMapping("/{ByPosition}/recommend")
-    @ApiOperation("按位置推荐")
-    public List<University> recommend_ByPosition(@PathVariable ArrayList<University> uni, Province province){
-        return uniRecommendationService.recommend_ByPosition(uni,province);
+    @PostMapping("/recommend")
+    @ApiOperation("获取大学推荐")
+    public List<RecommendDTO> recommend(@RequestBody User user){
+        return uniRecommendationService.recommend(user);
     }
 
-
-
-
-    @GetMapping("/{ByScore}/recommend")
-    @ApiOperation("按成绩推荐")
-    public List<University> recommend_ByGrade(@PathVariable Integer score, Integer range){
-        return uniRecommendationService.recommend_ByGrade(score,range);
+    @PostMapping("/uniCompare")
+    @ApiOperation("大学对比")
+    public List<University> getRate(@RequestBody String uname1, String uname2){
+        return  uniCompareService.getRate(uname1, uname2);
     }
 
-
-
-    @GetMapping("/{ByRank}/recommend")
-    @ApiOperation("按大学排名推荐")
-    public List<University> recommend_ByRank(@PathVariable ArrayList<University> uni){
-        return uniRecommendationService.recommend_ByRank(uni);
-    }
-
-
-    @GetMapping("/{comprehensive}/recommend")
-    @ApiOperation("综合推荐")
-    public List<University> recommend_comprehensive(@PathVariable Integer score, String provinceName, String major, String subject){
-        return uniRecommendationService.recommend_comprehensive(score,provinceName,major,subject);
-    }
-    */
 }

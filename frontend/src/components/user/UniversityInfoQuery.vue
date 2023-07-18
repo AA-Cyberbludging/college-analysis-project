@@ -19,11 +19,22 @@ type UniversityDetail = {
   uprofile: string,
 }
 
+type EnrollmentPlan = {
+  uid: number,
+  pname: string,
+  subject: string,
+  major: string,
+  year: number,
+  enrollmentNum: number,
+}
+
 export default defineComponent({
   data() {
     return {
       universityList: [] as UniversityList[],
       universityDetail: {} as UniversityDetail,
+      uniEnrollmentPlan: [] as EnrollmentPlan[],
+      selectedUname: "",
       selectedUid: 0,
       provinces: provinces,
       conditions: {
@@ -55,10 +66,20 @@ export default defineComponent({
         this.$message.error("大学信息获取失败")
       }
     },
-    async selectUniversity(index: number) {
-      this.selectedUid = index;
+    async selectUniversity(uid: number) {
+      this.selectedUid = uid;
+      this.selectedUname = this.universityList[uid - 1].uname
       await this.getUniversityInfo()
+      await this.getEnrollmentPlan()
       this.getImageUri()
+    },
+    async getEnrollmentPlan() {
+      try {
+        const data = await axios.get(`/api/display/university/${this.selectedUid}/admission`)
+        this.uniEnrollmentPlan = data.data;
+      } catch (error: any) {
+        this.$message.error("招生计划获取失败: " + error)
+      }
     },
     setFilter() {
       this.filteredUList = this.universityList.filter(x => {
@@ -202,9 +223,6 @@ export default defineComponent({
     getImageUri() {
       this.badgePath = `../../src/assets/badge/${this.selectedUid}.jpg`
     },
-    getEnrollmentPlan() {
-
-    }
   },
   async created() {
     await this.getUniversityList()
@@ -278,29 +296,25 @@ export default defineComponent({
               </div>
             </el-col>
             <el-col :span="3">
-              <el-button type="primary" style="margin-top: 71px;">招生计划</el-button>
+              <el-button type="primary" style="margin-top: 71px;" @click="enrollmentDialogVisible = true">招生计划</el-button>
             </el-col>
           </el-row>
           <div v-if="universityDetail.sexRatio !== null">
             <p class="profile">{{ universityDetail.uprofile }}</p>
             <el-row>
               <el-col :span="12">
-                <base-echart :option="getSexRatioOption()" width="400px"></base-echart>
-
+                <base-echart :option="getSexRatioOption()" width="400px" />
               </el-col>
               <el-col :span="12">
-                <base-echart :option="getEmployRatioOption()" width="400px"></base-echart>
-
+                <base-echart :option="getEmployRatioOption()" width="400px" />
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <base-echart :option="getShipmentRatioOption()" width="400px"></base-echart>
-
+                <base-echart :option="getShipmentRatioOption()" width="400px" />
               </el-col>
               <el-col :span="12">
-                <base-echart :option="getEnrollmentRatioOption()" width="400px"></base-echart>
-
+                <base-echart :option="getEnrollmentRatioOption()" width="400px" />
               </el-col>
             </el-row>
           </div>
@@ -314,6 +328,17 @@ export default defineComponent({
       </el-main>
     </el-container>
   </div>
+
+  <el-dialog v-model="enrollmentDialogVisible" :title="selectedUname">
+    <el-table :data="uniEnrollmentPlan" max-height="700px">
+      <el-table-column prop="pname" label="省份"/>
+      <el-table-column prop="year" label="年份"/>
+      <el-table-column prop="subject" label="文理"/>
+      <el-table-column prop="major" label="专业"/>
+      <el-table-column prop="enrollmentNum" label="招生数量"/>
+    </el-table>
+
+  </el-dialog>
 </template>
 
 <style scoped>

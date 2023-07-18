@@ -29,11 +29,11 @@ public interface UniversityMapper {
         @Select("select * from province order by unum desc ")
         List<Province> getUniversityCountBypName();
         //获取某大学招生计划
-        @Select("SELECT * FROM enrollment_plan " +
-                "natural join mps " +
-                "natural join university " +
-                " WHERE uname = #{name}")
-        List<EnrollmentPlan> getEnrollmentPlanByuName(String name);
+        @Select("SELECT university.uid, enrollment_plan.pname, subject, major, year, enrollment_num " +
+                "FROM enrollment_plan join university " +
+                "on enrollment_plan.uid = university.uid " +
+                "where university.uid = #{id}")
+        List<EnrollmentPlan> getEnrollmentPlanById(Integer id);
         //获取某大学各专业录取分数线及位次
         @Select("SELECT * FROM mps " +
                 "natural join university " +

@@ -38,6 +38,7 @@ export default defineComponent({
 
 h3 {
   width: 150px;
+  font-size: 120%;
 }
 
 .popularity {
@@ -58,6 +59,8 @@ span {
   color: white;
   border-radius: 4px;
   padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
   font-size: 90%;
 }
 </style>

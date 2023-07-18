@@ -90,6 +90,7 @@ export default defineComponent({
     <el-table-column prop="userId" label="用户 ID" />
     <el-table-column prop="userName" label="用户名" />
     <el-table-column prop="feedback" label="反馈" :show-overflow-tooltip="true"/>
+    <el-table-column prop="time" label="反馈时间" :show-overflow-tooltip="true"/>
     <el-table-column prop="status" label="状态" :filters="[
       { text: '已解决', value: '已解决' },
       { text: '未解决', value: '未解决' }

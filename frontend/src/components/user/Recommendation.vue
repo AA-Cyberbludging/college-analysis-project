@@ -14,29 +14,29 @@ import RecommendationCard from '../utils/RecommendationCard.vue';
 //   subject: string,
 // }
 
-// type Recommendation = {
-//   uid: number,
-//   uname: number,
-
-// }
+type Recommendation = {
+  uid: number,
+  uname: string,
+  probability: string,
+  recommendType: string,
+}
 
 export default defineComponent({
   data() {
     return {
       provinces: provinces,
       newUserInfoForm: {
-        userName: "" as string,
         userScore: 0 as number,
         userRank: 0 as number,
         pname: {} as string,
         subject: {} as string,
       },
+      recomList: [] as Recommendation[],
     };
   },
   methods: {
     initForm() {
       this.newUserInfoForm = {
-        userName: this.userStore.userName,
         userScore: this.userStore.userScore,
         userRank: this.userStore.userRank,
         pname: this.userStore.pname,
@@ -56,16 +56,20 @@ export default defineComponent({
       }
     },
     async getRecommendation() {
-      // try {
-      //   const data = await axios.post(`/api/display/recommend`, {
-      //     userScore: "",
-      //     userRank: "",
-      //     pname: "",
-      //     subject: "",
-      //   }, { headers: {Authorization: window.localStorage.getItem('cap-access')}})
-      // } catch (error: any) {
-      //   this.$message.error("志愿推荐获取失败: " + error.toString())
-      // }
+      if (this.newUserInfoForm.userScore < 400 || this.newUserInfoForm.userScore > 750) {
+        this.$message.error("请输入正确范围内的分数 (400~750)")
+        return
+      }
+      if (this.newUserInfoForm.userRank < 1) {
+        this.$message.error("请输入正确的位次")
+        return
+      }
+      try {
+        const data = await axios.post(`/api/display/recommend`, this.newUserInfoForm, { headers: { Authorization: window.localStorage.getItem('cap-access') } })
+        this.recomList = data.data
+      } catch (error: any) {
+        this.$message.error("志愿推荐获取失败: " + error.toString())
+      }
     }
   },
   computed: {
@@ -87,9 +91,6 @@ export default defineComponent({
       </div>
       <div class="left">
         <el-form v-model="newUserInfoForm" style="padding-right: 20px; padding-top: 60px;" label-width="60px">
-          <el-form-item label="用户名">
-            <el-input v-model="newUserInfoForm.userName" />
-          </el-form-item>
           <el-form-item label="省份">
             <el-select v-model="newUserInfoForm.pname">
               <el-option v-for="(item, _) in provinces" :label="item" :value="item" />
@@ -114,10 +115,8 @@ export default defineComponent({
       <div class="right">
         <ul>
           <li>
-            <RecommendationCard uname="中国电力大学 (华北)" rate="5%" type="冲" />
-            <RecommendationCard uname="🍊⚡" rate="60%" type="稳" />
-            <RecommendationCard uname="Sichuan University" rate="90%" type="保" />
-            <RecommendationCard uname="Sichuan University" rate="90%" type="保" />
+            <RecommendationCard v-for="(item, _) in recomList" :uname="item.uname" :rate="item.probability"
+              :type="item.recommendType" />
           </li>
         </ul>
       </div>
@@ -135,6 +134,7 @@ ul {
   margin-block-start: 0;
   margin-block-end: 0;
   padding-inline-start: 0;
+  max-height: 500px;
 }
 
 li {

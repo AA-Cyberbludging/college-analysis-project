@@ -27,7 +27,7 @@ public class UniRecommendationService {
 
     private boolean inUpperRange(Integer score, Integer rank, MPSDTO mps){
         if((score > mps.getAveragePassingScore()-20 && score <= mps.getAveragePassingScore()-10) ||
-                (rank > mps.getAveragePassingRank()-2000 && rank <= mps.getAveragePassingRank()-1000)){
+                (rank > mps.getAveragePassingRank()+1000 && rank <= mps.getAveragePassingRank()+2000)){
             return true;
         }
         return false;
@@ -41,7 +41,7 @@ public class UniRecommendationService {
     }
     private boolean inLowerRange(Integer score, Integer rank, MPSDTO mps){
         if((score > mps.getAveragePassingScore()+10 && score <= mps.getAveragePassingScore()+20) ||
-                (rank > mps.getAveragePassingRank()+1000 && rank <= mps.getAveragePassingRank()+2000)){
+                (rank > mps.getAveragePassingRank()-2000 && rank <= mps.getAveragePassingRank()-1000)){
             return true;
         }
         return false;

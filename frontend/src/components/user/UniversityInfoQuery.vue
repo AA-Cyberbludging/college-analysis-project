@@ -358,12 +358,12 @@ export default defineComponent({
   <el-dialog v-model="enrollmentDialogVisible" :title="selectedUname">
     <el-table :data="uniEnrollmentPlan" max-height="700px">
       <el-table-column prop="pname" label="省份" :filters="provinces.map(x => { return { text: x, value: x } })"
-        :filter-method="(value: string, row: EnrollmentPlan) => { return row.pname === value }" />
+        :filter-method="(value: string, row: EnrollmentPlan) => row.pname === value" />
       <el-table-column prop="year" label="年份" :filters="yearFilterHandler1()"
-        :filter-method="(value, row) => value === row.year" />
+        :filter-method="(value: string, row: EnrollmentPlan) => value === row.year.toString()" />
       <el-table-column prop="subject" label="文理" :filters="[
         { text: '文科', value: '文科' }, { text: '理科', value: '理科' }]"
-        :filter-method="(value, row) => value === row.subject" />
+        :filter-method="(value: string, row: EnrollmentPlan) => value === row.subject" />
       <el-table-column prop="major" label="专业" />
       <el-table-column prop="enrollmentNum" label="招生数量" />
     </el-table>
@@ -374,12 +374,12 @@ export default defineComponent({
       <el-table-column prop="pname" label="省份" :filters="provinces.map(x => { return { text: x, value: x } })"
         :filter-method="(value: string, row: EnrollmentPlan) => { return row.pname === value }" />
       <el-table-column prop="year" label="年份" :filters="yearFilterHandler2()"
-        :filter-method="(value, row) => value === row.year" />
+        :filter-method="(value: string, row: EnrollmentPlan) => value === row.year.toString()" />
       <el-table-column prop="subject" label="文理" :filters="[
         { text: '文科', value: '文科' }, { text: '理科', value: '理科' }]"
-        :filter-method="(value, row) => value === row.subject" />
+        :filter-method="(value: string, row: EnrollmentPlan) => value === row.subject" />
       <el-table-column prop="major" label="专业" />
-      <el-table-column prop="umps" label="最低分" />
+      <el-table-column prop="umps" label="最低分"  />
       <el-table-column prop="rank" label="最低位次" />
     </el-table>
   </el-dialog>

@@ -44,6 +44,7 @@ export default defineComponent({
           this.$message.success("登录成功")
           window.localStorage.setItem('cap-access', loginResult.data.data.token)
           this.userStore.userId = loginResult.data.data.id
+          this.userStore.isStudent = this.loginForm.isStudent
           await this.getUserInfo()
           this.loginDialogVisible = false
           this.miscStore.login = true

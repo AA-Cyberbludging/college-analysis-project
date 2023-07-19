@@ -72,8 +72,8 @@ export default defineComponent({
             position: 'inside'
           },
           gap: 1,
-          minSize: '25%',
-          maxSize: '100%',
+          minSize: '50%',
+          maxSize: '150%',
           bottom: 20
         }]
       }
@@ -149,17 +149,44 @@ export default defineComponent({
         title: {
           name: "test",
           text: "中国 985/211 高校分布",
-          left: "center"
+          left: "center",
+          textStyle: {
+            fontSize: 25
+          }
         },
+        roam: true,
         tooltip: {
           trigger: 'item',
           showDelay: 0,
-          transitionDuration: 0.2
+          transitionDuration: 0.2,
+          formatter: "<b>{b}</b>: {c}"
+        },
+        visualMap: {
+          min: 0,
+          max: 26,
+          left: 'left',
+          top: 'bottom',
+          inRange: {
+            color: ['rgba(181, 27, 0, 0.2)', '#b51b00']
+          },
+        },
+        toolbox: {
+          show: true,
+          left: 'right',
+          top: 'top',
+          feature: {
+            restore: {},
+          }
         },
         series: [{
           type: 'map',
           map: 'china',
-          data: dataList
+          data: dataList,
+          itemStyle: {
+            emphasis: {
+              areaColor: 'rgb(255, 0, 0, 0.65)'
+            }
+          }
         }]
       }
     },
@@ -234,7 +261,7 @@ export default defineComponent({
     </div>
     <div class="column middle">
       <div class="chart-grid animated" v-if="mapLoaded">
-        <base-echart :option="getMapChartOption()" style="" />
+        <base-echart :option="getMapChartOption()" width="200" style="height: 600px; padding-top: 50px;" />
       </div>
     </div>
     <div class="column right">
@@ -289,6 +316,7 @@ export default defineComponent({
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;

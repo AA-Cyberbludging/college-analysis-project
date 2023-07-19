@@ -39,14 +39,15 @@ onBeforeUnmount(() => {
     echartInstance.value = null;
 });
 
-useResize(echartInstance);
-
 const initChart = () => {
     echartInstance.value = echarts.init(echartRef.value!, "light", {
         renderer: "svg",
     });
     echartInstance.value.setOption(props.option);
 };
+
+useResize(echartInstance);
+
 </script>
-  
+
 <style scoped></style>

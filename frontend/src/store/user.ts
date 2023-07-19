@@ -14,13 +14,3 @@ export const userStore = defineStore('user', {
   },
   persist: true
 })
-
-export const adminStore = defineStore('admin', {
-  state: () => {
-    return {
-      id: {} as number,
-      name: {} as string
-    }
-  },
-  persist: true
-})

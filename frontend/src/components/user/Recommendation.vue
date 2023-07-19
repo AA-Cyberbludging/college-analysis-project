@@ -87,7 +87,7 @@ export default defineComponent({
   <div class="center-container">
     <div class="container">
       <div style="margin-bottom: 30px;">
-        <span style="font-size: 150%;">志愿推荐</span>
+        <span style="font-size: 150%; font-weight: bold;">志愿推荐</span>
       </div>
       <div class="left">
         <el-form v-model="newUserInfoForm" style="padding-right: 20px; padding-top: 60px;" label-width="60px">

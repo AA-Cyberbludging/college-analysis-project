@@ -159,7 +159,7 @@ export default defineComponent({
   <div class="center-container">
     <div class="container">
       <div v-if="userStore.isStudent">
-        <h2>考生信息</h2>
+        <h2>学生信息</h2>
         <el-form v-model="newUserInfoForm" :disabled="!isChangable" style="padding: 20px;" label-width="60px">
           <el-form-item label="用户名">
             <el-input v-model="newUserInfoForm.userName" />

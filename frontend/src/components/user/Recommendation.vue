@@ -88,6 +88,7 @@ export default defineComponent({
     <div class="container">
       <div style="margin-bottom: 30px;">
         <span style="font-size: 150%; font-weight: bold;">志愿推荐</span>
+        <el-alert title="建议按照一分一段表填写位次哦!" type="info" show-icon style="margin-top: 20px;"/>
       </div>
       <div class="left">
         <el-form v-model="newUserInfoForm" style="padding-right: 20px; padding-top: 60px;" label-width="60px">

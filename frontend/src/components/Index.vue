@@ -72,8 +72,8 @@ export default defineComponent({
             position: 'inside'
           },
           gap: 1,
-          minSize: '25%',
-          maxSize: '100%',
+          minSize: '50%',
+          maxSize: '150%',
           bottom: 20
         }]
       }

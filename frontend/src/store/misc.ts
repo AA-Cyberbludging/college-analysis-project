@@ -4,7 +4,6 @@ export const miscStore = defineStore('misc', {
   state: () => {
     return {
       login: false,
-      currentMenuIndex: 1
     }
   },
   persist: true

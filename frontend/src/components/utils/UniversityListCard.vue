@@ -24,7 +24,8 @@ export default defineComponent({
       </el-col>
     </el-row>
     
-    <span>{{ utype }}</span> <span>{{ pname }}</span>
+    <span class="t-985" v-if="utype === '985'">{{ utype }}</span>
+    <span class="t-211" v-else>{{ utype }}</span> <span>{{ pname }}</span>
     <hr>
   </div>
 </template>
@@ -55,12 +56,20 @@ h3 {
 }
 
 span {
-  background-color: rgb(53, 141, 241);
   color: white;
   border-radius: 4px;
+  background-color: rgb(53, 141, 241);
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
   font-size: 90%;
+}
+
+span.t-985 {
+  background-color: rgb(0, 67, 145);
+}
+
+span.t-211 {
+  background-color: rgb(85, 155, 234);
 }
 </style>

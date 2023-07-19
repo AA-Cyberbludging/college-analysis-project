@@ -17,8 +17,8 @@ public class AnalysisInfoService {
     /*获取某大学各专业录取分数线及位次
     *返回MinimumPassingScore列表
      */
-    public List<MinimumPassingScore> getMPSById(Integer id) {
-        return universityMapper.getMPSById(id);
+    public List<MinimumPassingScore> getMpsById(Integer id) {
+        return universityMapper.getMpsById(id);
     }
 
     /*返回某大学的招生计划

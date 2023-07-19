@@ -6,7 +6,6 @@ import com.cyberbludging.cap.entity.ProvinceAdmission;
 import com.cyberbludging.cap.entity.University;
 import com.cyberbludging.cap.entity.dto.UniversityDTO;
 import com.cyberbludging.cap.entity.dto.UpopularityDTO;
-import com.cyberbludging.cap.mapper.ProvinceAdmissionMapper;
 import com.cyberbludging.cap.mapper.UniversityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class DisplayInfoService {
+public class InfoService {
 
     @Autowired
     private UniversityMapper universityMapper;
-
-    @Autowired
-    private ProvinceAdmissionMapper provinceAdmissionMapper;
 
     public List<UniversityDTO> getAllUniversity() {
         return universityMapper.getAllUniversity();
@@ -52,10 +48,10 @@ public class DisplayInfoService {
         List<ProvinceAdmission> dataOf2021;
         List<ProvinceAdmission> dataOf2022;
         List<ProvinceAdmission> dataOf2023;
-        dataOf2020 = provinceAdmissionMapper.getAdmissionLine(2020);
-        dataOf2021 = provinceAdmissionMapper.getAdmissionLine(2021);
-        dataOf2022 = provinceAdmissionMapper.getAdmissionLine(2022);
-        dataOf2023 = provinceAdmissionMapper.getAdmissionLine(2023);
+        dataOf2020 = universityMapper.getAdmissionLine(2020);
+        dataOf2021 = universityMapper.getAdmissionLine(2021);
+        dataOf2022 = universityMapper.getAdmissionLine(2022);
+        dataOf2023 = universityMapper.getAdmissionLine(2023);
 
         List<ProvinceAdmission> province_admissions = new ArrayList<>();
         province_admissions.addAll(dataOf2020);

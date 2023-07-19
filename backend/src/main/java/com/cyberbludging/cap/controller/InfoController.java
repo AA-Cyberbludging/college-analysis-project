@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = "展示接口")
+@Api(tags = "信息接口")
 @RestController
-@RequestMapping("/display")
+@RequestMapping("/info")
 @CrossOrigin
-public class DisplayController {
+public class InfoController {
     @Autowired
-    private DisplayInfoService displayInfoService;
+    private InfoService infoService;
 
     @Autowired
     private AnalysisInfoService analyseInfoService;
@@ -30,39 +30,38 @@ public class DisplayController {
     @GetMapping("/tendency")
     @ApiOperation("获取各省份录取趋势")
     public List<ProvinceAdmission> getAdmissionLine(){
-        return displayInfoService.getAllAdmissionLine();
+        return infoService.getAllAdmissionLine();
     }
 
     @GetMapping("/university/{id}/mps")
     @ApiOperation("获取大学各专业最低录取分数线和位次")
     public List<MinimumPassingScore> getMPSById(@PathVariable Integer id){
-        return analyseInfoService.getMPSById(id);
+        return analyseInfoService.getMpsById(id);
     }
-
 
     @GetMapping("/university")
     @ApiOperation("获取大学列表")
     public List<UniversityDTO> getAllUniversity() {
-        return displayInfoService.getAllUniversity();
+        return infoService.getAllUniversity();
     }
 
     @GetMapping("/university/{id}")
     @ApiOperation("根据 ID 获取大学详细信息 (升学率，男女比例等)")
     public University getUniversityDetail(@PathVariable Integer id) {
-        return displayInfoService.searchById(id);
+        return infoService.searchById(id);
     }
 
     @GetMapping("/university/popularity")
     @ApiOperation("获取大学热度排名")
     public List<UpopularityDTO> rankByPopularity(){
-        return displayInfoService.rankByPopularity();
+        return infoService.rankByPopularity();
     }
 
 
     @GetMapping("/province")
     @ApiOperation("获取大学省份数量排名")
     public List<Province> rankByProvince(){
-        return displayInfoService.rankByProvince();
+        return infoService.rankByProvince();
     }
 
     @GetMapping("/university/{id}/admission")

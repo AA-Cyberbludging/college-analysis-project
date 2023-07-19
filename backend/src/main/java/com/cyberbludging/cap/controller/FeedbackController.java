@@ -36,7 +36,7 @@ public class FeedbackController {
         return feedbackDealService.finishFeedback(fd_id);
     }
 
-    @PostMapping("/add")
+    @PutMapping ("")
     @ApiOperation("添加反馈")
     public Result addFeedback(@RequestBody Feedback feedback) {
         return feedbackDealService.addFeedback(feedback.getUserId(), feedback.getFeedback(), feedback.getTimestamp());

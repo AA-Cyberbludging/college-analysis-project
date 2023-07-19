@@ -6,6 +6,7 @@ public class RecommendDTO {
     private String uname;
     private String probability;
     private String recommendType;
+    private LowestMpsDTO lowestMps;
 
     public void set(Integer id,String name,String pro,String type){
         uid = id;
@@ -25,5 +26,29 @@ public class RecommendDTO {
     }
     public String getRecommendType(){
         return recommendType;
+    }
+
+    public LowestMpsDTO getLowestMps() {
+        return lowestMps;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public void setProbability(String probability) {
+        this.probability = probability;
+    }
+
+    public void setRecommendType(String recommendType) {
+        this.recommendType = recommendType;
+    }
+
+    public void setLowestMps(LowestMpsDTO lowestMpsList) {
+        this.lowestMps = lowestMpsList;
     }
 }

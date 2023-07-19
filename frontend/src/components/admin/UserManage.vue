@@ -83,7 +83,7 @@ export default defineComponent({
         return
       }
       try {
-        const res = await axios.post(`/api/user/${this.confirmUserId}`, this.newUserInfoForm, {
+        const res = await axios.patch(`/api/user/${this.confirmUserId}`, this.newUserInfoForm, {
           headers: {
             Authorization: window.localStorage.getItem('cap-access')
           }

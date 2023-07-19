@@ -62,7 +62,7 @@ export default defineComponent({
         return
       }
       try {
-        const res = await axios.post(`/api/user/${this.userStore.userId}`, this.newUserInfoForm, {
+        const res = await axios.patch(`/api/user/${this.userStore.userId}`, this.newUserInfoForm, {
           headers: {
             Authorization: window.localStorage.getItem('cap-access')
           }
@@ -99,7 +99,7 @@ export default defineComponent({
 
       let path = `/api/user/${this.userStore.userId}/password`
       try {
-        axios.post(path, this.newPasswordForm, {
+        axios.patch(path, this.newPasswordForm, {
           headers: {
             Authorization: window.localStorage.getItem('cap-access')
           }
@@ -119,13 +119,11 @@ export default defineComponent({
         this.$message.error("请输入反馈")
         return
       }
-      const time = nowTimestamp()
-      console.log(time)
       try {
-        const data = await axios.post('/api/feedback/add', {
+        const data = await axios.put('/api/feedback', {
           userId: this.userStore.userId,
           feedback: this.feedback,
-          timestamp: time
+          timestamp: nowTimestamp()
         }, {
           headers: { Authorization: window.localStorage.getItem('cap-access') }
         })
@@ -232,7 +230,7 @@ export default defineComponent({
   </el-dialog>
 
   <el-dialog v-model="feedbackDialogVisible" title="用户反馈" style="max-width: 500px;">
-    <el-input v-model="feedback" autosize type="textarea" placeholder="请输入您的反馈" />
+    <el-input v-model="feedback" autosize type="textarea" placeholder="请输入您的反馈" show-word-limit maxlength="300" />
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="feedbackDialogVisible = false, feedback = ''">取消</el-button>

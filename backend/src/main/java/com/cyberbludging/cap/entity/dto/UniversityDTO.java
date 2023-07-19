@@ -50,15 +50,4 @@ public class UniversityDTO {
     public void setUpopularity(Integer upopularity) {
         this.upopularity = upopularity;
     }
-
-    @Override
-    public String toString() {
-        return "UniversityDTO{" +
-                "uid=" + uid +
-                ", uname='" + uname + '\'' +
-                ", pname='" + pname + '\'' +
-                ", utype='" + utype + '\'' +
-                ", upopularity=" + upopularity +
-                '}';
-    }
 }

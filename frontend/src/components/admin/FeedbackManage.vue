@@ -95,7 +95,7 @@ export default defineComponent({
       { text: '已解决', value: '已解决' },
       { text: '未解决', value: '未解决' }
     ]" 
-    :filter-method="(value, row) => { return row.tag === value }"/>
+    :filter-method="(value: string, row: Feedback) => { return row.status === value }"/>
     <el-table-column label="操作">
       <template #default="scope">
         <el-button type="success" @click="confirmFeedback(scope.$index)" v-if="!feedbackList[scope.$index].fbDeal">完成</el-button>

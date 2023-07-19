@@ -14,11 +14,20 @@ type Popularity = {
   uname: string,
   upopularity: number
 }
+
+type Admission = {
+  pname: string,
+  year: number,
+  admissionLine: number,
+  subject: string,
+}
+
 export default defineComponent({
   data() {
     return {
       provinceList: [] as Province[],
       popularityList: [] as Popularity[],
+      admissionList: [] as Admission[],
       mapLoaded: false,
     }
   },
@@ -37,8 +46,96 @@ export default defineComponent({
       }
     },
     getProvinceListOption() {
+      const slice = this.provinceList.slice(0, 5)
+      const data = slice.map(x => {
+        return {
+          value: x.unum,
+          name: x.pname
+        }
+      })
       return {
+        title: [
+          {
+            text: "大学数量 TOP5",
+            left: 'center'
+          }
+        ],
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}: {c}'
+        },
+        series: [{
+          type: 'funnel',
+          data: data,
+          label: {
+            show: true,
+            position: 'inside'
+          },
+          gap: 1,
+          minSize: '25%',
+          maxSize: '100%',
+          bottom: 20
+        }]
+      }
+    },
+    async getAdmissionList() {
+      try {
+        const data = await axios.get('/api/display/tendency')
+        this.admissionList = data.data
+      } catch (error: any) {
+        this.$message.error("历年分数线获取失败: " + error)
+      }
+    },
+    getAdmissionListOption(type: string) {
+      const rdata = this.admissionList.filter(x => x.subject === type)
 
+      const seriesData = rdata.reduce<{ [key: number]: Admission[] }>((acc, item) => {
+        const year = item.year;
+        if (!acc[year]) {
+          acc[year] = [];
+        }
+        acc[year].push(item);
+        return acc;
+      }, {});
+
+      const series = Object.entries(seriesData).map(([year, data]) => ({
+        name: year.toString(),
+        type: 'bar',
+        data: data.map((item) => item.admissionLine.toString()),
+      }));
+      return {
+        title: {
+          text: `近四年各省${type}一本分数线`,
+          left: "center"
+        },
+        tooltip: {
+          show: true,
+          trigger: 'item',
+          axisPointer: {
+            type: 'shadow'
+          },
+        },
+        legend: {
+          data: ['2020', '2021', '2022', '2023'],
+          top: "10%"
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: Array.from(new Set(rdata.map(x => x.pname))),
+            axisPointer: {
+              type: 'shadow'
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            min: 300,
+            max: 600,
+            interval: 50,
+          }],
+        series
       }
     },
     getMapChartOption() {
@@ -120,6 +217,7 @@ export default defineComponent({
     await this.registerMap()
     await this.getProvinceList()
     await this.getPopularityList()
+    await this.getAdmissionList()
   }
 })
 </script>
@@ -127,24 +225,24 @@ export default defineComponent({
 <template>
   <div class="container">
     <div class="column left">
-      <div class="chart-grid">
-        <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
+      <div class="chart-grid animated">
+        <base-echart :option="getProvinceListOption()" width="130" style="padding-top: 20px;" />
       </div>
-      <div class="chart-grid">
-        <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
+      <div class="chart-grid animated">
+        <base-echart :option="getAdmissionListOption('文科')" width="130" style="padding-top: 20px;" />
       </div>
     </div>
     <div class="column middle">
-      <div class="chart-grid">
-        <base-echart :option="getMapChartOption()" v-if="mapLoaded" style="padding-top: 200px;"/>
+      <div class="chart-grid animated" v-if="mapLoaded">
+        <base-echart :option="getMapChartOption()" style="" />
       </div>
     </div>
     <div class="column right">
-      <div class="chart-grid">
+      <div class="chart-grid animated">
         <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
       </div>
-      <div class="chart-grid">
-        <base-echart :option="getPopularityListOption()" width="130" style="padding-top: 20px;" />
+      <div class="chart-grid animated">
+        <base-echart :option="getAdmissionListOption('理科')" width="130" style="padding-top: 20px;" />
       </div>
     </div>
   </div>
@@ -153,7 +251,6 @@ export default defineComponent({
 <style scoped>
 .container {
   display: flex;
-  flex-direction: row;
   height: 91vh;
 }
 
@@ -163,21 +260,38 @@ export default defineComponent({
 
 .left {
   width: 27%;
-  background-color: #ccc;
+  /* background-color: #ccc; */
 }
 
 .middle {
   width: 46%;
-  background-color: #ddd;
+  /* background-color: #ddd; */
 }
 
 .right {
   width: 27%;
-  background-color: #ccc;
+  /* background-color: #ccc; */
 }
 
 .chart-grid {
-  background-color: burlywood;
+  background-color: rgb(248, 248, 248);
   margin: 10px;
+  box-shadow: 2px 3px 10px rgb(128, 128, 128, 0.5);
+  border-radius: 16px;
+}
+
+.animated {
+  animation: slide-up 1s ease-out;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 </style>

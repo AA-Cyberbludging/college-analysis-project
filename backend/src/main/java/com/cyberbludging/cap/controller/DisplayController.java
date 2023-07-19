@@ -11,38 +11,32 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "展示接口")
 @RestController
 @RequestMapping("/display")
 @CrossOrigin
-
 public class DisplayController {
     @Autowired
     private DisplayInfoService displayInfoService;
 
     @Autowired
-    private ProvinceAdmissionService provinceAdmissionService;
+    private AnalysisInfoService analyseInfoService;
 
-    @Autowired
-    private AnalyseInfoService analyseInfoService;
-    private AuthenticationService authenticationService;
-    private UniCompareService uniCompareService;
     @Autowired
     private UniRecommendationService uniRecommendationService;
 
     @GetMapping("/tendency")
-    @ApiOperation("展示各省份录取趋势")
+    @ApiOperation("获取各省份录取趋势")
     public List<ProvinceAdmission> getAdmissionLine(){
-        return provinceAdmissionService.getAllAdmissionLine();
+        return displayInfoService.getAllAdmissionLine();
     }
 
-    @PostMapping("/{MinimumPassingScore}")
-    @ApiOperation("展示最低录取分数线")
-    public List<MinimumPassingScore> getMPSByuName(@PathVariable String uname ){
-        return analyseInfoService.getMPSByuName(uname);
+    @GetMapping("/university/{id}/mps")
+    @ApiOperation("获取大学各专业最低录取分数线和位次")
+    public List<MinimumPassingScore> getMPSById(@PathVariable Integer id){
+        return analyseInfoService.getMPSById(id);
     }
 
 
@@ -57,10 +51,6 @@ public class DisplayController {
     public University getUniversityDetail(@PathVariable Integer id) {
         return displayInfoService.searchById(id);
     }
-
-
-
-
 
     @GetMapping("/university/popularity")
     @ApiOperation("获取大学热度排名")
@@ -86,11 +76,4 @@ public class DisplayController {
     public List<RecommendDTO> recommend(@RequestBody User user){
         return uniRecommendationService.recommend(user);
     }
-
-    @PostMapping("/uniCompare")
-    @ApiOperation("大学对比")
-    public List<University> getRate(@RequestBody String uname1, String uname2){
-        return  uniCompareService.getRate(uname1, uname2);
-    }
-
 }

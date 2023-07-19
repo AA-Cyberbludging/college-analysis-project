@@ -19,14 +19,9 @@ public interface UniversityMapper {
        //获取学校列表
        @Select("SELECT uid, uname, pname, utype, upopularity FROM university ")
         List<UniversityDTO> getAllUniversity();
-       //通过地区和类型选择学校
-        /*
-        @Select("SELECT uid, uname, pname, utype, upopularity FROM university "+
-                "WHERE pname = #{name} and utype = #{type}")
-        List<UniversityDTO> getUniversityByNameAndType(String name,String type);
-        */
-        //获取各省份大学数量
-        @Select("select * from province order by unum desc ")
+
+        //获取各省份大学数量 TOP 5
+        @Select("select * from province order by unum desc")
         List<Province> getUniversityCountBypName();
         //获取某大学招生计划
         @Select("SELECT university.uid, enrollment_plan.pname, subject, major, year, enrollment_num " +
@@ -35,20 +30,11 @@ public interface UniversityMapper {
                 "where university.uid = #{id}")
         List<EnrollmentPlan> getEnrollmentPlanById(Integer id);
         //获取某大学各专业录取分数线及位次
-        @Select("SELECT * FROM mps " +
-                "natural join university " +
-                " WHERE uname = #{name}")
-        List<MinimumPassingScore> getMPSByuName(String name);
-        /*
-        //获取某大学的所有信息
-        @Select("SELECT * FROM university " +
-                " WHERE uname = #{name}")
-        University getUniversityByName(String name);
-        */
-        //获取某大学的男女比率，就业率，升学率，国内就业率, 简介
-        @Select("SELECT sex_ratio, employ_rate, shipment_rate, enrollment_rate, uprofile FROM university " +
-                " WHERE uname = #{name}")
-        University getUniversityRateByName(String name);
+        @Select("SELECT mps.pname, `year`, subject, major, umps, `rank` " +
+                "FROM mps join university " +
+                "on mps.uid = university.uid " +
+                "where mps.uid = #{id}")
+        List<MinimumPassingScore> getMPSById(Integer id);
 
         //获取近三年大学平均最低录取分及录取名次
         @Select("SELECT uid, AVG(umps) AS averagePassingScore, AVG(`rank`) AS averagePassingRank FROM " +

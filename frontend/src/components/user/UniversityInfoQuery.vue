@@ -28,12 +28,22 @@ type EnrollmentPlan = {
   enrollmentNum: number,
 }
 
+type MPS = {
+  year: number,
+  umps: number,
+  major: string,
+  rank: number,
+  subject: string,
+  pname: string,
+}
+
 export default defineComponent({
   data() {
     return {
       universityList: [] as UniversityList[],
       universityDetail: {} as UniversityDetail,
       uniEnrollmentPlan: [] as EnrollmentPlan[],
+      uniMps: [] as MPS[],
       selectedUname: "",
       selectedUid: 0,
       provinces: provinces,
@@ -46,6 +56,7 @@ export default defineComponent({
       filteredUList: [] as UniversityList[],
       badgePath: "",
       enrollmentDialogVisible: false,
+      mpsDialogVisible: false,
     }
   },
   methods: {
@@ -71,6 +82,7 @@ export default defineComponent({
       this.selectedUname = this.universityList[uid - 1].uname
       await this.getUniversityInfo()
       await this.getEnrollmentPlan()
+      await this.getMpsList()
       this.getImageUri()
     },
     async getEnrollmentPlan() {
@@ -79,6 +91,14 @@ export default defineComponent({
         this.uniEnrollmentPlan = data.data;
       } catch (error: any) {
         this.$message.error("招生计划获取失败: " + error)
+      }
+    },
+    async getMpsList() {
+      try {
+        const data = await axios.get(`/api/display/university/${this.selectedUid}/mps`)
+        this.uniMps = data.data;
+      } catch (error: any) {
+        this.$message.error("分数线获取失败: " + error)
       }
     },
     setFilter() {
@@ -223,13 +243,20 @@ export default defineComponent({
     getImageUri() {
       this.badgePath = `../../src/assets/badge/${this.selectedUid}.jpg`
     },
+    yearFilterHandler1() {
+      const years = Array.from(new Set(this.uniEnrollmentPlan.map(x => x.year)));
+      const data = years.map(x => { return { text: x.toString(), value: x.toString() } });
+      return data
+    },
+    yearFilterHandler2() {
+      const years = Array.from(new Set(this.uniMps.map(x => x.year)));
+      const data = years.map(x => { return { text: x.toString(), value: x.toString() } });
+      return data
+    },
   },
   async created() {
     await this.getUniversityList()
     this.filteredUList = this.universityList
-  },
-  computed: {
-
   }
 })
 </script>
@@ -282,7 +309,7 @@ export default defineComponent({
                 </template>
               </el-image>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="10">
               <p style="font-size: 250%; padding-left: 20px;">{{ universityList[selectedUid - 1].uname
               }}</p>
             </el-col>
@@ -292,8 +319,10 @@ export default defineComponent({
                 <span class="tag">{{ universityList[selectedUid - 1].pname }}</span>
               </div>
             </el-col>
-            <el-col :span="3">
-              <el-button type="primary" style="margin-top: 55.5px;" @click="enrollmentDialogVisible = true">招生计划</el-button>
+            <el-col :span="5">
+              <el-button type="primary" style="margin-top: 55.5px;"
+                @click="enrollmentDialogVisible = true">招生计划</el-button>
+              <el-button type="primary" style="margin-top: 55.5px;" @click="mpsDialogVisible = true">分数线</el-button>
             </el-col>
           </el-row>
           <div v-if="universityDetail.sexRatio !== null">
@@ -328,13 +357,31 @@ export default defineComponent({
 
   <el-dialog v-model="enrollmentDialogVisible" :title="selectedUname">
     <el-table :data="uniEnrollmentPlan" max-height="700px">
-      <el-table-column prop="pname" label="省份"/>
-      <el-table-column prop="year" label="年份"/>
-      <el-table-column prop="subject" label="文理"/>
-      <el-table-column prop="major" label="专业"/>
-      <el-table-column prop="enrollmentNum" label="招生数量"/>
+      <el-table-column prop="pname" label="省份" :filters="provinces.map(x => { return { text: x, value: x } })"
+        :filter-method="(value: string, row: EnrollmentPlan) => { return row.pname === value }" />
+      <el-table-column prop="year" label="年份" :filters="yearFilterHandler1()"
+        :filter-method="(value, row) => value === row.year" />
+      <el-table-column prop="subject" label="文理" :filters="[
+        { text: '文科', value: '文科' }, { text: '理科', value: '理科' }]"
+        :filter-method="(value, row) => value === row.subject" />
+      <el-table-column prop="major" label="专业" />
+      <el-table-column prop="enrollmentNum" label="招生数量" />
     </el-table>
+  </el-dialog>
 
+  <el-dialog v-model="mpsDialogVisible" :title="selectedUname">
+    <el-table :data="uniMps" max-height="700px">
+      <el-table-column prop="pname" label="省份" :filters="provinces.map(x => { return { text: x, value: x } })"
+        :filter-method="(value: string, row: EnrollmentPlan) => { return row.pname === value }" />
+      <el-table-column prop="year" label="年份" :filters="yearFilterHandler2()"
+        :filter-method="(value, row) => value === row.year" />
+      <el-table-column prop="subject" label="文理" :filters="[
+        { text: '文科', value: '文科' }, { text: '理科', value: '理科' }]"
+        :filter-method="(value, row) => value === row.subject" />
+      <el-table-column prop="major" label="专业" />
+      <el-table-column prop="umps" label="最低分" />
+      <el-table-column prop="rank" label="最低位次" />
+    </el-table>
   </el-dialog>
 </template>
 
@@ -344,6 +391,7 @@ ul {
   margin-block-start: 0;
   margin-block-end: 0;
   padding-inline-start: 0;
+  height: 63vh;
 }
 
 li {

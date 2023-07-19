@@ -1,7 +1,8 @@
 package com.cyberbludging.cap.service;
 
 import com.cyberbludging.cap.entity.*;
-import com.cyberbludging.cap.entity.dto.MPSDTO;
+import com.cyberbludging.cap.entity.dto.LowestMpsDTO;
+import com.cyberbludging.cap.entity.dto.MpsDTO;
 import com.cyberbludging.cap.entity.dto.RecommendDTO;
 import com.cyberbludging.cap.mapper.UniversityMapper;
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -18,8 +19,7 @@ public class UniRecommendationService {
     @Autowired
     private UniversityMapper universityMapper;
 
-    private double probability;
-    private List<MPSDTO> mpsdto = new ArrayList<MPSDTO>();
+    private List<MpsDTO> mpsdto = new ArrayList<>();
 
 /*
     private double singleProbability(Integer temp, Integer avg){
@@ -32,8 +32,8 @@ public class UniRecommendationService {
     }
 */
 
-    public MPSDTO getAvgByUniversity(User user, University uni) {
-        MPSDTO mps = new MPSDTO();
+    public MpsDTO getAvgByUniversity(User user, University uni) {
+        MpsDTO mps = new MpsDTO();
         mpsdto = universityMapper.getAvg(user.getSubject(), user.getPname());
         for (int i = 0; i < mpsdto.size(); i++) {
             if (uni.getUid().equals(mpsdto.get(i).getUid())) {
@@ -113,7 +113,7 @@ public class UniRecommendationService {
      *目前录取概率0.1~0.4为冲，0.4~0.8为稳，0.8以上为保
      */
     public List<RecommendDTO> recommend(User user) {
-        List<RecommendDTO> recommendDTOS = new ArrayList<RecommendDTO>();
+        List<RecommendDTO> recommendDTOS = new ArrayList<>();
         mpsdto = universityMapper.getAvg(user.getSubject(), user.getPname());
         for (int i = 0; i < mpsdto.size(); i++) {
             RecommendDTO recommend = new RecommendDTO();
@@ -123,16 +123,25 @@ public class UniRecommendationService {
                 recommend.set(mpsdto.get(i).getUid(),
                         universityMapper.getUniversityByID(mpsdto.get(i).getUid()).getUname(),
                         getPercentProbability(pro), "冲");
+                LowestMpsDTO lowestMps =
+                        universityMapper.getLowestMpsByConditions(mpsdto.get(i).getUid(), 2022, user.getSubject(), user.getPname());
+                recommend.setLowestMps(lowestMps);
                 recommendDTOS.add(recommend);
             } else if (pro >= 0.4 && pro < 0.8) {
                 recommend.set(mpsdto.get(i).getUid(),
                         universityMapper.getUniversityByID(mpsdto.get(i).getUid()).getUname(),
                         getPercentProbability(pro), "稳");
+                LowestMpsDTO lowestMps =
+                        universityMapper.getLowestMpsByConditions(mpsdto.get(i).getUid(), 2022, user.getSubject(), user.getPname());
+                recommend.setLowestMps(lowestMps);
                 recommendDTOS.add(recommend);
             } else if (pro >= 0.8) {
                 recommend.set(mpsdto.get(i).getUid(),
                         universityMapper.getUniversityByID(mpsdto.get(i).getUid()).getUname(),
                         getPercentProbability(pro), "保");
+                LowestMpsDTO lowestMps =
+                        universityMapper.getLowestMpsByConditions(mpsdto.get(i).getUid(), 2022, user.getSubject(), user.getPname());
+                recommend.setLowestMps(lowestMps);
                 recommendDTOS.add(recommend);
             }
         }

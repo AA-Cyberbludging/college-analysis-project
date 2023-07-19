@@ -19,6 +19,14 @@ type UniversityDetail = {
   uprofile: string,
 }
 
+type ComparisonData = {
+  uname: string,
+  sexRatio: string,
+  employRate: string,
+  shipmentRate: string,
+  enrollmentRate: string,
+}
+
 type EnrollmentPlan = {
   uid: number,
   pname: string,
@@ -41,6 +49,11 @@ export default defineComponent({
   data() {
     return {
       universityList: [] as UniversityList[],
+      universitySimpleList: [] as {
+        uid: number,
+        uname: string,
+      }[],
+      filteredUList: [] as UniversityList[],
       universityDetail: {} as UniversityDetail,
       uniEnrollmentPlan: [] as EnrollmentPlan[],
       uniMps: [] as MPS[],
@@ -53,26 +66,32 @@ export default defineComponent({
         is985: false,
         reorder: false,
       },
-      filteredUList: [] as UniversityList[],
       badgePath: "",
+      landscapePath: "",
+      // 对话框控制变量
       enrollmentDialogVisible: false,
       mpsDialogVisible: false,
+      comparisonDialogVisible: false,
+      rivalUName: "",
+      comparisonData: [] as ComparisonData[],
     }
   },
   methods: {
     async getUniversityList() {
       try {
-        const data = await axios.get('/api/display/university')
+        const data = await axios.get('/api/info/university')
         this.universityList = data.data
+        this.universitySimpleList = this.universityList.map(x => {
+          return { uid: x.uid, uname: x.uname }
+        })
       } catch (error: any) {
         this.$message.error("大学列表获取失败")
       }
     },
     async getUniversityInfo() {
       try {
-        const data = await axios.get(`/api/display/university/${this.selectedUid}`)
+        const data = await axios.get(`/api/info/university/${this.selectedUid}`)
         this.universityDetail = data.data
-        console.log(this.universityDetail)
       } catch (error: any) {
         this.$message.error("大学信息获取失败")
       }
@@ -87,7 +106,7 @@ export default defineComponent({
     },
     async getEnrollmentPlan() {
       try {
-        const data = await axios.get(`/api/display/university/${this.selectedUid}/admission`)
+        const data = await axios.get(`/api/info/university/${this.selectedUid}/admission`)
         this.uniEnrollmentPlan = data.data;
       } catch (error: any) {
         this.$message.error("招生计划获取失败: " + error)
@@ -95,7 +114,7 @@ export default defineComponent({
     },
     async getMpsList() {
       try {
-        const data = await axios.get(`/api/display/university/${this.selectedUid}/mps`)
+        const data = await axios.get(`/api/info/university/${this.selectedUid}/mps`)
         this.uniMps = data.data;
       } catch (error: any) {
         this.$message.error("分数线获取失败: " + error)
@@ -242,17 +261,56 @@ export default defineComponent({
     },
     getImageUri() {
       this.badgePath = `../../src/assets/badge/${this.selectedUid}.jpg`
+      this.landscapePath = `../../src/assets/landscape/${this.selectedUid}.png`
     },
-    yearFilterHandler1() {
-      const years = Array.from(new Set(this.uniEnrollmentPlan.map(x => x.year)));
-      const data = years.map(x => { return { text: x.toString(), value: x.toString() } });
-      return data
+    yearFilterHandler<T extends { year: number }>(data: T[]) {
+      const years = Array.from(new Set(data.map(x => x.year)));
+      return years.map(x => { return { text: x.toString(), value: x.toString() } });
     },
-    yearFilterHandler2() {
-      const years = Array.from(new Set(this.uniMps.map(x => x.year)));
-      const data = years.map(x => { return { text: x.toString(), value: x.toString() } });
-      return data
+    querySearch(queryString: string, cb: any) {
+      let unis = this.universitySimpleList.map(x => {
+        return {
+          value: x.uname
+        }
+      })
+      unis.splice(this.selectedUid - 1, 1)
+      const results = queryString
+        ? unis.filter(x => x.value.includes(queryString))
+        : unis
+      cb(results)
     },
+    async handleSelect(item: any) {
+      this.comparisonData.splice(0, this.comparisonData.length)
+      const rivalUid = this.universitySimpleList.find(x => x.uname === item.value)?.uid
+      const { sexRatio, employRate, shipmentRate, enrollmentRate } = this.universityDetail
+      let rivalDetail = {} as any
+      try {
+        const data = await axios.get(`/api/info/university/${rivalUid}`)
+        rivalDetail = data.data        
+      } catch (error: any) {
+        this.$message.error("大学信息获取失败")
+        return
+      }
+
+      const _sexRatio = (sexRatio / (1 - sexRatio)).toFixed(2)
+      this.comparisonData.push({
+        uname: this.universitySimpleList[this.selectedUid - 1].uname,
+        sexRatio: `${_sexRatio}:1`,
+        employRate: `${(employRate * 100).toFixed(1)}%`,
+        shipmentRate: `${(shipmentRate * 100).toFixed(1)}%`,
+        enrollmentRate: `${(enrollmentRate * 100).toFixed(1)}%`
+      })
+      
+      const rivalSexRatio = rivalDetail.sexRatio as number
+      const __sexRatio = (rivalSexRatio / (1 - rivalSexRatio)).toFixed(2)
+      this.comparisonData.push({
+        uname: rivalDetail.uname,
+        sexRatio: `${__sexRatio}:1`,
+        employRate: `${(rivalDetail.employRate * 100).toFixed(1)}%`,
+        shipmentRate: `${(rivalDetail.shipmentRate * 100).toFixed(1)}%`,
+        enrollmentRate: `${(rivalDetail.enrollmentRate * 100).toFixed(1)}%`
+      })
+    }
   },
   async created() {
     await this.getUniversityList()
@@ -269,7 +327,7 @@ export default defineComponent({
         <div class="form">
           <el-form :model="conditions">
             <el-form-item label="大学名">
-              <el-input v-model="conditions.uname"></el-input>
+              <el-input v-model="conditions.uname" />
             </el-form-item>
             <el-form-item label="所在省份">
               <el-select v-model="conditions.pname" placeholder="不限">
@@ -295,8 +353,8 @@ export default defineComponent({
       <el-main>
         <div v-if="selectedUid !== 0">
           <el-row style="background-color: rgb(247, 247, 247);">
-            <el-col>
-              <el-image src="../../src/assets/landscape/1.jpg" fit="scale-down" style="max-height: 150px;" />
+            <el-col :span="24">
+              <img :src="landscapePath" class="landscape" onerror="src='../../src/assets/landscape/fallback.png'" />
             </el-col>
           </el-row>
           <el-row>
@@ -304,25 +362,28 @@ export default defineComponent({
               <el-image :src="badgePath" class="badge">
                 <template #error>
                   <div class="image-slot">
-                    <el-image src="../../src/assets/badge/fallback.jpg" fit="scale-down" />
+                    <el-image src="../../src/assets/landscape/fallback.png" fit="scale-down" />
                   </div>
                 </template>
               </el-image>
             </el-col>
-            <el-col :span="10">
-              <p style="font-size: 250%; padding-left: 20px;">{{ universityList[selectedUid - 1].uname
+            <el-col :span="9">
+              <p style="font-size: 250%; padding-left: 20px; font-weight: bold;">{{ universityList[selectedUid - 1].uname
               }}</p>
             </el-col>
-            <el-col :span="3">
+            <el-col :span="3" style="text-align: right;">
               <div style="margin-top: 60px;">
-                <span class="tag">{{ universityList[selectedUid - 1].utype }}</span>
+                <span class="tag t-985" v-if="universityList[selectedUid - 1].utype === '985'">{{
+                  universityList[selectedUid - 1].utype }}</span>
+                <span class="tag t-211" v-else>{{
+                  universityList[selectedUid - 1].utype }}</span>
                 <span class="tag">{{ universityList[selectedUid - 1].pname }}</span>
               </div>
             </el-col>
-            <el-col :span="5">
-              <el-button type="primary" style="margin-top: 55.5px;"
-                @click="enrollmentDialogVisible = true">招生计划</el-button>
-              <el-button type="primary" style="margin-top: 55.5px;" @click="mpsDialogVisible = true">分数线</el-button>
+            <el-col :span="6" style="text-align: right;">
+              <el-button style="margin-top: 55.5px;" @click="enrollmentDialogVisible = true">招生计划</el-button>
+              <el-button style="margin-top: 55.5px;" @click="mpsDialogVisible = true">分数线</el-button>
+              <el-button type="primary" style="margin-top: 55.5px;" @click="comparisonDialogVisible = true">对比</el-button>
             </el-col>
           </el-row>
           <div v-if="universityDetail.sexRatio !== null">
@@ -359,7 +420,7 @@ export default defineComponent({
     <el-table :data="uniEnrollmentPlan" max-height="700px">
       <el-table-column prop="pname" label="省份" :filters="provinces.map(x => { return { text: x, value: x } })"
         :filter-method="(value: string, row: EnrollmentPlan) => row.pname === value" />
-      <el-table-column prop="year" label="年份" :filters="yearFilterHandler1()"
+      <el-table-column prop="year" label="年份" :filters="yearFilterHandler(uniEnrollmentPlan)"
         :filter-method="(value: string, row: EnrollmentPlan) => value === row.year.toString()" />
       <el-table-column prop="subject" label="文理" :filters="[
         { text: '文科', value: '文科' }, { text: '理科', value: '理科' }]"
@@ -369,18 +430,36 @@ export default defineComponent({
     </el-table>
   </el-dialog>
 
+  <!--  -->
   <el-dialog v-model="mpsDialogVisible" :title="selectedUname">
     <el-table :data="uniMps" max-height="700px">
       <el-table-column prop="pname" label="省份" :filters="provinces.map(x => { return { text: x, value: x } })"
         :filter-method="(value: string, row: EnrollmentPlan) => { return row.pname === value }" />
-      <el-table-column prop="year" label="年份" :filters="yearFilterHandler2()"
+      <el-table-column prop="year" label="年份" :filters="yearFilterHandler(uniMps)"
         :filter-method="(value: string, row: EnrollmentPlan) => value === row.year.toString()" />
       <el-table-column prop="subject" label="文理" :filters="[
         { text: '文科', value: '文科' }, { text: '理科', value: '理科' }]"
         :filter-method="(value: string, row: EnrollmentPlan) => value === row.subject" />
       <el-table-column prop="major" label="专业" />
-      <el-table-column prop="umps" label="最低分"  />
+      <el-table-column prop="umps" label="最低分" sortable />
       <el-table-column prop="rank" label="最低位次" />
+    </el-table>
+  </el-dialog>
+
+  <!-- 大学对比 -->
+  <el-dialog v-model="comparisonDialogVisible" :title="'与' + selectedUname + '对比'">
+    <el-form>
+      <el-form-item label="对比学校">
+        <el-autocomplete v-model="rivalUName" :fetch-suggestions="querySearch" :trigger-on-focus="false" clearable
+          placeholder="请输入大学名" @select="handleSelect" />
+      </el-form-item>
+    </el-form>
+    <el-table :data="comparisonData">
+      <el-table-column prop="uname" label="学校名" />
+      <el-table-column prop="sexRatio" label="男女比例" />
+      <el-table-column prop="employRate" label="就业率" />
+      <el-table-column prop="shipmentRate" label="出国率" />
+      <el-table-column prop="enrollmentRate" label="升学率" />
     </el-table>
   </el-dialog>
 </template>
@@ -409,6 +488,14 @@ li {
   margin: 5px;
 }
 
+.t-985 {
+  background-color: rgb(0, 67, 145);
+}
+
+.t-211 {
+  background-color: rgb(85, 155, 234);
+}
+
 .form {
   margin-left: 20px;
   margin-right: 20px;
@@ -421,6 +508,13 @@ li {
   box-shadow: 1px 3px 3px gray;
   height: 200px;
   width: 200px;
+}
+
+.landscape {
+  max-height: 150px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .profile {

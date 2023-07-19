@@ -5,6 +5,7 @@ export default defineComponent({
     uname: String,
     rate: String,
     type: String,
+    lowestMps: Object,
   },
   data() {
     return {}
@@ -45,25 +46,33 @@ export default defineComponent({
   <div class="card-container">
     <el-row>
       <el-col :span="2">
-        <div style=" margin-top: 12px;">
+        <div style=" margin-top: 20px;">
           <span :style="getStyle">{{ type }}</span>
         </div>
       </el-col>
       <el-col :span="3">
         <div>
-          <div style="font-size: 5px; padding-top: 5px;">录取率</div>
+          <div style="font-size: 5px; padding-top: 12px;">录取率</div>
           <span class="rate">{{ rate }}</span>
         </div>
       </el-col>
       <el-col :span="12">
-        <div style="padding-top: 12px;">{{ uname }}</div>
+        <div style="padding-top: 22px;">{{ uname }}</div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="3" v-if="lowestMps">
         <div>
-          <div style="font-size: 5px; padding-top: 5px;">2022 年</div>
-          <span class="rank">{{ rate }}</span>
+          <div style="font-size: 5px; padding-top: 5px; font-weight: bold;">历年</div>
+          <span style="font-size: 5px;">最低分</span>
           <br />
-          <span class="rank">{{ rate }}</span>
+          <span style="font-size: 5px;">最低位次</span>
+        </div>
+      </el-col>
+      <el-col :span="3" v-if="lowestMps">
+        <div>
+          <div style="font-size: 5px; padding-top: 5px; font-weight: bold;">{{ lowestMps?.year }} 年</div>
+          <span style="font-size: 5px;">{{ lowestMps?.umps }}</span>
+          <br />
+          <span style="font-size: 5px;">{{ lowestMps?.rank }}</span>
         </div>
       </el-col>
     </el-row>
@@ -74,7 +83,7 @@ export default defineComponent({
 .card-container {
   transition: all 0.1s ease-in;
   padding: 5px;
-  height: 50px;
+  height: 65px;
   border-radius: 8px;
 }
 

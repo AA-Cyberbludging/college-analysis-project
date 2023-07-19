@@ -19,7 +19,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    private AnalysisInfoService analyseInfoService;
 
     @GetMapping("/{id}")
     @ApiOperation("获取用户信息")
@@ -27,22 +26,16 @@ public class UserController {
         return userService.getUserInfo(id);
     }
 
-    @PostMapping("/{id}")
+    @PatchMapping("/{id}")
     @ApiOperation("更新用户信息")
     Result updateUserInfo(@PathVariable Integer id,
                           @RequestBody User newInfo) {
         return userService.updateUserInfo(id, newInfo.getUserName(), newInfo.getUserScore(), newInfo.getUserRank(), newInfo.getPname(), newInfo.getSubject());
     }
 
-
-    @PostMapping("/{id}/password")
+    @PatchMapping("/{id}/password")
     @ApiOperation("更新用户密码")
     Result updateUserPassword(@PathVariable Integer id, @RequestBody PasswordDTO passwordForm) {
         return userService.updateUserPassword(id, passwordForm.getOldPassword(), passwordForm.getNewPassword());
     }
-
-
-
-
-
 }

@@ -39,7 +39,7 @@ export default defineComponent({
     },
     async getProvinceList() {
       try {
-        const data = await axios.get('/api/display/province')
+        const data = await axios.get('/api/info/province')
         this.provinceList = data.data
       } catch (error: any) {
         this.$message.error("省份列表获取失败")
@@ -80,7 +80,7 @@ export default defineComponent({
     },
     async getAdmissionList() {
       try {
-        const data = await axios.get('/api/display/tendency')
+        const data = await axios.get('/api/info/tendency')
         this.admissionList = data.data
       } catch (error: any) {
         this.$message.error("历年分数线获取失败: " + error)
@@ -170,14 +170,6 @@ export default defineComponent({
             color: ['rgba(181, 27, 0, 0.2)', '#b51b00']
           },
         },
-        toolbox: {
-          show: true,
-          left: 'right',
-          top: 'top',
-          feature: {
-            restore: {},
-          }
-        },
         series: [{
           type: 'map',
           map: 'china',
@@ -192,7 +184,7 @@ export default defineComponent({
     },
     async getPopularityList() {
       try {
-        const data = await axios.get('/api/display/university/popularity')
+        const data = await axios.get('/api/info/university/popularity')
         this.popularityList = data.data
       } catch (error: any) {
         this.$message.error("热度列表获取失败")

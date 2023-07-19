@@ -1,6 +1,6 @@
 package com.cyberbludging.cap.entity.dto;
 
-public class MPSDTO {
+public class MpsDTO {
 
     private Integer uid;
     private Integer averagePassingScore;

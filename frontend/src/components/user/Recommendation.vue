@@ -7,18 +7,17 @@ import { defineComponent } from 'vue';
 
 import RecommendationCard from '../utils/RecommendationCard.vue';
 
-// type PAdmission = {
-//   pname: string,
-//   year: number,
-//   admissionLine: number,
-//   subject: string,
-// }
 
 type Recommendation = {
   uid: number,
   uname: string,
   probability: string,
   recommendType: string,
+  lowestMps: {
+    year: number,
+    umps: number,
+    rank: number,
+  }
 }
 
 export default defineComponent({
@@ -65,8 +64,12 @@ export default defineComponent({
         return
       }
       try {
-        const data = await axios.post(`/api/display/recommend`, this.newUserInfoForm, { headers: { Authorization: window.localStorage.getItem('cap-access') } })
+        const data = await axios.post(`/api/info/recommend`, this.newUserInfoForm, { headers: { Authorization: window.localStorage.getItem('cap-access') } })
         this.recomList = data.data
+        if (this.recomList.length === 0) {
+          this.$message.info("没有为您匹配到任何志愿")
+        }
+
       } catch (error: any) {
         this.$message.error("志愿推荐获取失败: " + error.toString())
       }
@@ -117,7 +120,7 @@ export default defineComponent({
         <ul>
           <li>
             <RecommendationCard v-for="(item, _) in recomList" :uname="item.uname" :rate="item.probability"
-              :type="item.recommendType" />
+              :type="item.recommendType" :lowest-mps="item.lowestMps"/>
           </li>
         </ul>
       </div>

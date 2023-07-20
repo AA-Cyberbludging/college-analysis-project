@@ -448,7 +448,7 @@ export default defineComponent({
 
   <!-- 大学对比 -->
   <el-dialog v-model="comparisonDialogVisible" :title="'与' + selectedUname + '对比'">
-    <el-form>
+    <el-form @submit.native.prevent>
       <el-form-item label="对比学校">
         <el-autocomplete v-model="rivalUName" :fetch-suggestions="querySearch" :trigger-on-focus="false" clearable
           placeholder="请输入大学名" @select="handleSelect" />

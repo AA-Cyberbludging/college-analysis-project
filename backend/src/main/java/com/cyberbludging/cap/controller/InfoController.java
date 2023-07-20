@@ -22,9 +22,6 @@ public class InfoController {
     private InfoService infoService;
 
     @Autowired
-    private AnalysisInfoService analyseInfoService;
-
-    @Autowired
     private UniRecommendationService uniRecommendationService;
 
     @GetMapping("/tendency")
@@ -36,7 +33,7 @@ public class InfoController {
     @GetMapping("/university/{id}/mps")
     @ApiOperation("获取大学各专业最低录取分数线和位次")
     public List<MinimumPassingScore> getMPSById(@PathVariable Integer id){
-        return analyseInfoService.getMpsById(id);
+        return infoService.getMpsById(id);
     }
 
     @GetMapping("/university")
@@ -67,7 +64,7 @@ public class InfoController {
     @GetMapping("/university/{id}/admission")
     @ApiOperation("获取指定学校招生计划")
     public List<EnrollmentPlan> getUniversityAdmission(@PathVariable Integer id) {
-        return analyseInfoService.getEnrollmentPlan(id);
+        return infoService.getEnrollmentPlan(id);
     }
 
     @PostMapping("/recommend")

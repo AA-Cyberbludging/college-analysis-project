@@ -108,8 +108,4 @@ h3 {
 .card-container:hover {
   background-color: rgb(128, 128, 128, 0.1);
 }
-
-.card-container:active {
-  background-color: rgb(128, 128, 128, 0.3);
-}
 </style>

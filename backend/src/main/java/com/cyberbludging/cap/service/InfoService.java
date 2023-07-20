@@ -1,9 +1,6 @@
 package com.cyberbludging.cap.service;
 
-import com.cyberbludging.cap.entity.MinimumPassingScore;
-import com.cyberbludging.cap.entity.Province;
-import com.cyberbludging.cap.entity.ProvinceAdmission;
-import com.cyberbludging.cap.entity.University;
+import com.cyberbludging.cap.entity.*;
 import com.cyberbludging.cap.entity.dto.UniversityDTO;
 import com.cyberbludging.cap.entity.dto.UpopularityDTO;
 import com.cyberbludging.cap.mapper.UniversityMapper;
@@ -59,5 +56,16 @@ public class InfoService {
         province_admissions.addAll(dataOf2022);
         province_admissions.addAll(dataOf2023);
         return province_admissions;
+    }
+
+    public List<MinimumPassingScore> getMpsById(Integer id) {
+        return universityMapper.getMpsById(id);
+    }
+
+    /*返回某大学的招生计划
+     *返回EnrollmentPlan列表
+     */
+    public List<EnrollmentPlan> getEnrollmentPlan(Integer id){
+        return universityMapper.getEnrollmentPlanById(id);
     }
 }

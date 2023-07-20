@@ -44,9 +44,7 @@ export default defineComponent({
     },
     async getUserInfo() {
       try {
-        const data = await axios.get(`/api/user/${this.userStore.userId}`, {
-          headers: { Authorization: window.localStorage.getItem("cap-access") }
-        });
+        const data = await axios.get(`/api/user/${this.userStore.userId}`);
         this.userStore.$state = data.data;
         console.log(this.userStore.$state);
       }
@@ -64,7 +62,7 @@ export default defineComponent({
         return
       }
       try {
-        const data = await axios.post(`/api/info/recommend`, this.newUserInfoForm, { headers: { Authorization: window.localStorage.getItem('cap-access') } })
+        const data = await axios.post(`/api/info/recommend`, this.newUserInfoForm)
         this.recomList = data.data
         if (this.recomList.length === 0) {
           this.$message.info("没有为您匹配到任何志愿")

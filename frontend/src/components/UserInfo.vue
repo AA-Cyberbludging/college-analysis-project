@@ -40,9 +40,7 @@ export default defineComponent({
     },
     async getUserInfo() {
       try {
-        const data = await axios.get(`/api/user/${this.userStore.userId}`, {
-          headers: { Authorization: window.localStorage.getItem('cap-access') }
-        })
+        const data = await axios.get(`/api/user/${this.userStore.userId}`)
         this.userStore.$state = data.data
         console.log(this.userStore.$state)
       } catch (error: any) {
@@ -62,11 +60,7 @@ export default defineComponent({
         return
       }
       try {
-        const res = await axios.patch(`/api/user/${this.userStore.userId}`, this.newUserInfoForm, {
-          headers: {
-            Authorization: window.localStorage.getItem('cap-access')
-          }
-        })
+        const res = await axios.patch(`/api/user/${this.userStore.userId}`, this.newUserInfoForm)
         if (res.data.success) {
           this.getUserInfo()
           this.$message.success("信息更新成功")
@@ -99,11 +93,7 @@ export default defineComponent({
 
       let path = `/api/user/${this.userStore.userId}/password`
       try {
-        axios.patch(path, this.newPasswordForm, {
-          headers: {
-            Authorization: window.localStorage.getItem('cap-access')
-          }
-        }).then(res => {
+        axios.patch(path, this.newPasswordForm).then(res => {
           ElMessage({ message: res.data.message, type: res.data.success ? "success" : "error" })
           if (res.data.success) {
             this.logout()
@@ -124,8 +114,6 @@ export default defineComponent({
           userId: this.userStore.userId,
           feedback: this.feedback,
           timestamp: nowTimestamp()
-        }, {
-          headers: { Authorization: window.localStorage.getItem('cap-access') }
         })
         if (data.data.success) {
           this.$message.success("反馈成功")

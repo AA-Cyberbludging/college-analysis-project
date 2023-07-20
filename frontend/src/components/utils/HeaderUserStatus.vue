@@ -42,7 +42,7 @@ export default defineComponent({
 
         if (loginResult.data.success === true) {
           this.$message.success("登录成功")
-          window.localStorage.setItem('cap-access', loginResult.data.data.token)
+          //window.localStorage.setItem('cap-access', loginResult.data.data.token)
           this.userStore.userId = loginResult.data.data.id
           this.userStore.isStudent = this.loginForm.isStudent
           await this.getUserInfo()
@@ -60,9 +60,7 @@ export default defineComponent({
     },
     async getUserInfo() {
       try {
-        const data = await axios.get(`/api/user/${this.userStore.userId}`, {
-          headers: { Authorization: window.localStorage.getItem('cap-access') }
-        })
+        const data = await axios.get(`/api/user/${this.userStore.userId}`)
         this.userStore.$state = data.data
         console.log(this.userStore.$state)
       } catch (error: any) {

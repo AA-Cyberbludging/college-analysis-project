@@ -24,9 +24,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("大学 API")
+                .title("大学院校分析与推荐系统 API")
                 .description("")
-                .version("0.1")
+                .version("1.0")
                 .build();
     }
 }

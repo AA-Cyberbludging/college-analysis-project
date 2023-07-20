@@ -4,13 +4,10 @@ import com.cyberbludging.cap.entity.dto.RegisterDTO;
 import com.cyberbludging.cap.entity.dto.UserAuthDTO;
 import com.cyberbludging.cap.service.AuthenticationService;
 import com.cyberbludging.cap.util.Result;
-import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Api(tags = "登录接口")
 @RestController
@@ -18,17 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 @CrossOrigin
 public class AuthenticationController {
     @Autowired
-    private AuthenticationService loginService;
+    private AuthenticationService authService;
 
     @PostMapping("/login")
     @ApiOperation("用户登录")
     public Result login(@RequestBody UserAuthDTO user) {
-        return loginService.login(user.getName(), user.getPassword(), user.getIsStudent());
+        return authService.login(user.getName(), user.getPassword(), user.getIsStudent());
     }
 
     @PostMapping("/register")
     @ApiOperation("用户注册")
     public Result register(@RequestBody RegisterDTO user) {
-        return loginService.register(user.getName(), user.getPassword(), user.getPname(), user.getSubject(), user.getUserScore(), user.getUserRank());
+        return authService.register(user.getName(), user.getPassword(), user.getPname(), user.getSubject(), user.getUserScore(), user.getUserRank());
     }
 }

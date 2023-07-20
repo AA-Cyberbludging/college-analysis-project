@@ -21,17 +21,6 @@ public class UniRecommendationService {
 
     private List<MpsDTO> mpsdto = new ArrayList<>();
 
-/*
-    private double singleProbability(Integer temp, Integer avg){
-        double result = (double)avg/temp;
-        double t =result;
-        for(int i=0;i<12;i++){
-            result = result*t;
-        }
-        return 1-0.5*result;
-    }
-*/
-
     public MpsDTO getAvgByUniversity(User user, University uni) {
         MpsDTO mps = new MpsDTO();
         mpsdto = universityMapper.getAvg(user.getSubject(), user.getPname());
@@ -42,34 +31,6 @@ public class UniRecommendationService {
         }
         return mps;
     }
-
-    /*
-    /*按照score与rank分别占比25%和75%
-    *在考生成绩与近三年平均相等时录取概率为0.5
-    * 相应地，考生成绩较低则录取概率低于0.5，较高高于0.5
-     /*
-    public double getProbability(User user, University uni){
-        double scoreProbability, rankProbability;
-        if(user.getUserScore()>=getAvgByUniversity(user,uni).getAveragePassingScore()){
-            scoreProbability = singleProbability(user.getUserScore(),
-                    getAvgByUniversity(user,uni).getAveragePassingScore());
-        }
-        else {
-            scoreProbability = 1-singleProbability(getAvgByUniversity(user,uni).getAveragePassingScore(),
-                    user.getUserScore());
-        }
-        if(user.getUserRank()>=getAvgByUniversity(user,uni).getAveragePassingRank()){
-            rankProbability = 1-singleProbability(user.getUserRank(),
-                    getAvgByUniversity(user,uni).getAveragePassingRank());
-        }
-        else {
-            rankProbability = singleProbability(getAvgByUniversity(user,uni).getAveragePassingRank(),
-                    user.getUserRank());;
-        }
-        probability = Math.sqrt(0.25*scoreProbability*scoreProbability+0.75*rankProbability*rankProbability);
-        return this.probability;
-    }
-    */
 
     public double getProbability(User user, University uni) {
 
@@ -118,29 +79,25 @@ public class UniRecommendationService {
         for (int i = 0; i < mpsdto.size(); i++) {
             RecommendDTO recommend = new RecommendDTO();
             double pro = getProbability(user, universityMapper.getUniversityByID(mpsdto.get(i).getUid()));
+            LowestMpsDTO lowestMps =
+                    universityMapper.getLowestMpsByConditions(mpsdto.get(i).getUid(), 2022, user.getSubject(), user.getPname());
 
             if (pro >= 0.1 && pro < 0.4) {
                 recommend.set(mpsdto.get(i).getUid(),
                         universityMapper.getUniversityByID(mpsdto.get(i).getUid()).getUname(),
                         getPercentProbability(pro), "冲");
-                LowestMpsDTO lowestMps =
-                        universityMapper.getLowestMpsByConditions(mpsdto.get(i).getUid(), 2022, user.getSubject(), user.getPname());
                 recommend.setLowestMps(lowestMps);
                 recommendDTOS.add(recommend);
             } else if (pro >= 0.4 && pro < 0.8) {
                 recommend.set(mpsdto.get(i).getUid(),
                         universityMapper.getUniversityByID(mpsdto.get(i).getUid()).getUname(),
                         getPercentProbability(pro), "稳");
-                LowestMpsDTO lowestMps =
-                        universityMapper.getLowestMpsByConditions(mpsdto.get(i).getUid(), 2022, user.getSubject(), user.getPname());
                 recommend.setLowestMps(lowestMps);
                 recommendDTOS.add(recommend);
             } else if (pro >= 0.8) {
                 recommend.set(mpsdto.get(i).getUid(),
                         universityMapper.getUniversityByID(mpsdto.get(i).getUid()).getUname(),
                         getPercentProbability(pro), "保");
-                LowestMpsDTO lowestMps =
-                        universityMapper.getLowestMpsByConditions(mpsdto.get(i).getUid(), 2022, user.getSubject(), user.getPname());
                 recommend.setLowestMps(lowestMps);
                 recommendDTOS.add(recommend);
             }

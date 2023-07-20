@@ -3,7 +3,6 @@ package com.cyberbludging.cap.controller;
 
 import com.cyberbludging.cap.entity.User;
 import com.cyberbludging.cap.entity.dto.PasswordDTO;
-import com.cyberbludging.cap.service.AnalysisInfoService;
 import com.cyberbludging.cap.service.UserService;
 import com.cyberbludging.cap.util.Result;
 import io.swagger.annotations.Api;

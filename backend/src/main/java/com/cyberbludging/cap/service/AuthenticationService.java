@@ -1,7 +1,6 @@
 package com.cyberbludging.cap.service;
 
 import com.cyberbludging.cap.mapper.UserMapper;
-import com.cyberbludging.cap.util.JwtUtil;
 import com.cyberbludging.cap.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,7 @@ public class AuthenticationService {
         Integer type = isStudent ? 1 : 2;
         if (userMapper.verifyUser(name, password, type) == 1) {
             Integer id = userMapper.getUserId(name);
-            String token = JwtUtil.generateToken(id, isStudent);
-            return Result.ok().addData("token", token).addData("id", id);
+            return Result.ok().addData("id", id);
         } else {
             return Result.error().setMessage("账号或密码错误");
         }
